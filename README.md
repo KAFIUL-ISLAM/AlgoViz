@@ -55,9 +55,6 @@ Whether you're:
 
 
 ## 📂 Folder Structure
-css
-Copy
-Edit
 src/
 ├── components/
 │   ├── Header.jsx
@@ -71,7 +68,8 @@ src/
 ├── App.jsx
 ├── main.jsx
 └── index.css
-##🤝 Contributors
+
+## 🤝 Contributors
 **👨‍💻 Kafiul Islam**
 
 **👩‍💻 Aya el Assal**
