@@ -4,7 +4,7 @@
 
 body {
     background: #222;
-    color: #fff;
+    color: #fff
 }
 
 .push-btn {
@@ -79,11 +79,13 @@ body {
 }
 
 .bar-idle {
-    background-color: rgba(40, 214, 192, 0.35);
+    background-color: #00E5E5;
 }
+
 .bar-idle:before {
     background-color: rgba(40, 214, 192, 0.25);
 }
+
 .bar-idle:after {
     background-color: rgba(40, 214, 192, 0.45);
 }
@@ -91,12 +93,29 @@ body {
 .bar-selected {
     background-color: rgba(254, 31, 78, 0.35);
 }
+
 .bar-selected:before {
     background-color: rgba(254, 31, 78, 0.25);
 }
+
 .bar-selected:after {
     background-color: rgba(254, 31, 78, 0.45);
 }
+
+
+/* For proper 3D flipping */
+.backface-hidden {
+    backface-visibility: hidden;
+}
+
+.transform-style-preserve-3d {
+    transform-style: preserve-3d;
+}
+
+.rotateY-180 {
+    transform: rotateY(180deg);
+}
+
 
 @media screen and (max-width: 770px) {
     .bar-container {
@@ -113,7 +132,7 @@ body {
     .chart-container {
         height: 200px;
     }
-    
+
     .bar-container {
         margin: 0 3px;
         transform: scaleX(0.4)
