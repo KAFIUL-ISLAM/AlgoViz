@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { SortingContext } from "../contexts/SortingContext.jsx";
 import algorithmInfos from "../data/algorithmInfos.js";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 
 function SortingChart() {
     const { sortingState, generateSortingArray, startVisualizing, changeSortingSpeed, changeAlgorithm } = useContext(SortingContext);
@@ -25,28 +25,85 @@ function SortingChart() {
     }, [isDark]);
 
     return (
-        <div className="mt-4 mb-4 flex flex-col items-center px-4">
+        <div className="mt-4 mb-4 flex flex-col ">
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3">
-                <div className="flex items-center gap-4">
-                    <img src="/logo.png" alt="AlgoViz Logo" className="h-12 w-12 object-contain" />
-                    <h1 className="text-3xl sm:text-5xl font-semibold tracking-wide text-slate-800 dark:text-white" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
+            <div className="flex items-center justify-between  py-3  w-full">
+                <div className="flex-shrink-0">
+                    <img
+                        src="/logo.png"
+                        alt="AlgoViz Logo"
+                        className="h-20 w-20 object-contain"
+                    />
+                    </div>
+               <div className="flex-1 text-center">
+                    <h1
+                        className="text-3xl sm:text-5xl font-semibold tracking-wide text-slate-800 dark:text-white"
+                        style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+                    >
                         Sorting Algorithm Visualizer
                     </h1>
-                </div>
-                <button
-    onClick={() => setIsDark(!isDark)}
-    className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition mx-4"
-    title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
->
-    {isDark ? (
-        <SunIcon className="h-6 w-6" />
-    ) : (
-        <MoonIcon className="h-6 w-6" />
-    )}
-</button>
+                    </div>
 
-            </div>
+               <div className="flex items-center gap-2"> 
+                <button
+                    onClick={() => setIsDark(!isDark)}
+                    className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition "
+                    title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                >
+                    {isDark ? (
+                        <SunIcon className="h-6 w-6" />
+                    ) : (
+                        <MoonIcon className="h-6 w-6" />
+                    )}
+                </button>
+                <button
+                onClick={() => setIsDark(!isDark)}
+                className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
+                title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                >
+                <img
+                    src="/login.png"
+                    alt="Logo"
+                    className="h-6 w-6 object-contain"
+                />
+                </button>
+
+                <button
+                onClick={() => setIsDark(!isDark)}
+                className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
+                title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                >
+                <img
+                    src="/sign.png"
+                    alt="Logo"
+                    className="h-6 w-6 object-contain"
+                />
+                </button>
+                </div>
+
+                </div>
+            <hr className="w-full border-t border-gray-300 dark:border-gray-600 my-4" />
+
+            <div className="flex flex-col items-center mb-4">
+                <ul className="list-disc list-inside flex flex-col gap-2 text-gray-600 dark:text-white-light text-center">
+                    <li>Sorting a large amount of data can take a substantial amount of computing resources and time if we use an inefficient algorithm to sort.</li>
+                    <li>The efficiency of the algorithm is proportional to the number of items to be sorted.</li>
+                    <li>For a small amount of data, a complex sorting method may be more trouble than it is worth.</li>
+                    <li>On the other hand, for larger amounts of data, we want to increase the efficiency and speed as far as possible.</li>
+                </ul>
+               <br />
+                
+                <div className="w-full max-w-xs h-56 mx-auto rounded-lg overflow-hidden border-2 border-turquoise-dark shadow-lg">
+                <img 
+                src="/pp.png" 
+                alt="Sorting Illustration" 
+                className="w-full h-full object-cover transition-transform hover:scale-105" />
+                            
+                            </div>
+                        </div>
+     <p className="text-center text-gray-600 dark:text-white-light mt-4">
+                    We will now discuss the several sorting techniques and compare them with respect to their time complexity.
+                </p><br />
 
             {/* Algorithm Buttons */}
             <div className="flex flex-wrap justify-center gap-3 my-6">
@@ -109,7 +166,10 @@ function SortingChart() {
 
                 {/* Info Table */}
                 <div>
-                    <h1 className="font-bold text-2xl md:text-4xl text-slate-800 dark:text-white">{algorithmInfos[sortingState.algorithm].name}</h1>
+                    <h1 className="font-bold text-2xl md:text-4xl text-slate-800 dark:text-white 
+    tracking-wide uppercase border-b-4 border-turquoise-dark dark:border-cyan-400 
+    pb-2 mb-6 text-center drop-shadow-sm">{algorithmInfos[sortingState.algorithm].name}</h1>
+                    <h2 className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-white mb-4 tracking-wide border-l-4 border-turquoise-dark dark:border-cyan-400 pl-3">Definition</h2>
                     <p className="whitespace-pre-line mb-6 text-slate-600 dark:text-white-light">{algorithmInfos[sortingState.algorithm].description}</p>
                     <div className="w-full h-0.5 bg-carbon-light mb-6" />
                     <div className="overflow-auto">
@@ -130,7 +190,8 @@ function SortingChart() {
                             <tbody>
                                 {Object.keys(algorithmInfos).map((key, i) => (
                                     <tr key={i} className="hover:bg-carbon-light whitespace-nowrap">
-                                        <td className={`px-4 py-1 ${i === 0 ? "pt-2" : ""} border-r border-carbon-light`}>{algorithmInfos[key].name}</td>
+                                        <td className={`px-4 py-1 ${i === 0 ? "pt-2" : ""} border-r border-carbon-light font-semibold tracking-wide text-gray-900 dark:text-white`}
+  style={{ fontFamily: "'Inter', sans-serif" }}>{algorithmInfos[key].name}</td>
                                         <td className={`px-4 py-1 ${i === 0 ? "pt-2" : ""}`}><span className={`px-1.5 py-0.5 rounded-md bg-${algorithmInfos[key].time_complexity.best[1]}`}>{algorithmInfos[key].time_complexity.best[0]}</span></td>
                                         <td className={`px-4 py-1 ${i === 0 ? "pt-2" : ""}`}><span className={`px-1.5 py-0.5 rounded-md bg-${algorithmInfos[key].time_complexity.average[1]}`}>{algorithmInfos[key].time_complexity.average[0]}</span></td>
                                         <td className={`px-4 py-1 ${i === 0 ? "pt-2" : ""} border-r border-carbon-light`}><span className={`px-1.5 py-0.5 rounded-md bg-${algorithmInfos[key].time_complexity.worst[1]}`}>{algorithmInfos[key].time_complexity.worst[0]}</span></td>
