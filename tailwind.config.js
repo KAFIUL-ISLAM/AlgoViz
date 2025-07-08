@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+    darkMode: 'class',
+
     theme: {
         extend: {
             colors: {
@@ -11,6 +13,15 @@ export default {
             }
         },
     },
-    safelist: ["bg-green-800", "bg-yellow-600", "bg-orange-700", "bg-red-800", "bg-lime-700"],
+
+    safelist: [
+        "bg-green-800",
+        "bg-yellow-600",
+        "bg-orange-700",
+        "bg-red-800",
+        "bg-lime-700"
+    ],
+
     plugins: [],
 };
+  
