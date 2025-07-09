@@ -1,3 +1,4 @@
 algorithmInfos[sortingState.algorithm].name
 
 npm install react-live
+npm install @monaco-editor/react

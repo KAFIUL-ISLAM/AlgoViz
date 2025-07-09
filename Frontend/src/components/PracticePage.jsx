@@ -1,10 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import CodeEditor from "./CodeEditor"; // Adjust path if needed
-
+import PythonEditor from "./PythonEditor";
 function PracticePage() {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef(null);
+  const resetTimer = () => {
+  clearInterval(intervalRef.current); // stop the interval
+  setIsRunning(false);             
+  setSeconds(0);                      
+
 
   useEffect(() => {
     if (isRunning) {
@@ -23,23 +28,50 @@ function PracticePage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between w-full">
-        <h1 className="text-2xl font-bold text-[#2B7A70]">
-          Searching & Sorting Algorithms Practice
-        </h1>
-        <button
-          onClick={toggleTimer}
-          className="flex items-center gap-2 px-4 py-2 bg-[#2B7A70] text-white rounded-full hover:bg-[#25665d] transition text-sm"
-        >
-          <img
-            src="/chrono.png"
-            alt="Chrono Icon"
-            className="inline w-4 h-4 mr-2"
-          />
-          {isRunning ? "Stop Timer" : "Start Timer"} ({seconds}s)
-        </button>
+      <div className="w-full mt-8 mb-6">
+        <div className="flex items-center justify-between w-full mb-6 relative">
+          {/* Left side: Stopwatch Icon */}
+          <div className="flex items-center gap-2">
+            <img
+              src="/favicon.png"
+              alt="Chronometer Icon"
+              className="w-8 h-10"
+            />
+          </div>
+
+          {/* Center: Title */}
+          <h1 className="text-2xl font-bold text-[#2B7A70]">
+            Searching & Sorting Algorithms Practice
+          </h1>
+
+          {/* Right side: Timer and Button */}
+          <div className="flex items-center gap-4">
+                <button
+                    onClick={toggleTimer}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#2B7A70] text-white rounded-full hover:bg-[#D93025] transition text-sm"
+                >
+                    <img
+                    src="/chrono.png"
+                    alt="Chrono Icon"
+                    className="inline w-4 h-4 mr-2"
+                    />
+                    {isRunning ? "Stop" : "Start "} ({seconds}s)
+                </button>
+
+                <button
+                    onClick={resetTimer}
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-500 text-white rounded-full hover:bg-gray-700 transition text-sm"
+                >
+                    🔄 Refresh
+                </button>
+            </div>
+        </div>
+
+        <hr className="border-t-2 border-gray-300 mb-6 w-full" />
+
       </div>
-       <div className="my-4 border-t border-gray-300 w-full"></div>
+
+      <div className="my-4 border-t border-gray-300 w-full"></div>
       <p
         className="list-disc list-inside flex flex-col gap-2 text-gray-600 dark:text-white-light text-left"
         style={{ fontFamily: "'Inter', sans-serif" }}
@@ -50,10 +82,14 @@ function PracticePage() {
         you improve, try these Python exercises with solutions to test your
         knowledge.
       </p>
-     <div className="my-8">
-  <CodeEditor />
-</div>
+
+      <div className="p-8">
+        <h1 className="text-2xl font-bold mb-6 text-[#2B7A70] text-center">
+          Practice Code Online
+        </h1>
+        <CodeEditor />
+      </div>
     </div>
   );
-}
+}}
 export default PracticePage;
