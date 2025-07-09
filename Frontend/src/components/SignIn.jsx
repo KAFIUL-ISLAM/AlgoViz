@@ -8,8 +8,8 @@ import {
   faEye,
   faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { useAuth } from '../contexts/AuthContext'; 
+import { useAuth } from '../contexts/AuthContext';
+import {jwtDecode} from "jwt-decode";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -48,6 +48,7 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError({ email: '', password: '', general: '' });
 
     if (!validateForm()) {
       setLoading(false);
@@ -55,29 +56,43 @@ function SignIn() {
     }
 
     try {
-      const res = await fetch('http://localhost:8000/api/signin/', {
+      const res = await fetch('http://localhost:8000/api/token/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: email, password })  // Using email as username
+        body: JSON.stringify({
+          username: email, // assuming email is used as username
+          password,
+        }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        setUser({ username: email });  // Set login state
-        navigate('/dashboard');        // Redirect
+        const { access, refresh } = data;
+
+        // Store tokens
+        localStorage.setItem('access_token', access);
+        localStorage.setItem('refresh_token', refresh);
+
+        // Decode access token to get user info
+        const decoded = jwtDecode(access);
+        setUser({ username: decoded.username, email: decoded.email });
+
+        navigate('/dashboard');
       } else {
-        setError(prev => ({ ...prev, general: data.error || 'Login failed' }));
+        setError(prev => ({
+          ...prev,
+          general: data?.detail || 'Login failed. Check credentials.',
+        }));
       }
     } catch (err) {
-      setError(prev => ({ ...prev, general: 'Server error. Try again later.' }));
+      setError(prev => ({
+        ...prev,
+        general: 'Server error. Please try again later.',
+      }));
     }
 
     setLoading(false);
-  };
-
-  const handleGoogleLogin = () => {
-    navigate('/dashboard');
   };
 
   return (
@@ -90,14 +105,6 @@ function SignIn() {
         {error.general && (
           <p className="text-red-500 text-center mb-4">{error.general}</p>
         )}
-
-        <button
-          onClick={handleGoogleLogin}
-          className="w-full py-2 mb-6 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded transition"
-        >
-          <FontAwesomeIcon icon={faGoogle} />
-          Login with Google
-        </button>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
@@ -156,6 +163,17 @@ function SignIn() {
               Sign up
             </Link>
           </p>
+        </div>
+
+        {/* Back to Visualizer Link */}
+        <div className="mt-4 flex justify-center">
+          <Link
+            to="/"
+            className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition font-medium shadow-sm text-sm"
+          >
+            <FontAwesomeIcon icon={faArrowRight} className="mr-1 rotate-180" />
+            Back to Visualizer
+          </Link>
         </div>
       </div>
     </div>

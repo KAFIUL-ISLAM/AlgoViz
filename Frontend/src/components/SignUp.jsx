@@ -9,8 +9,8 @@ import {
   faEye,
   faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { useAuth } from '../contexts/AuthContext';
+import {jwtDecode} from "jwt-decode";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -66,32 +66,58 @@ function SignUp() {
     }
 
     try {
-      const res = await fetch('http://localhost:8000/api/signup/', {
+      // 1. Signup the user
+      const signupRes = await fetch('http://localhost:8000/api/signup/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username: userInfo.email,
-          password: userInfo.password
-        })
+          password: userInfo.password,
+        }),
       });
 
-      const data = await res.json();
+      const signupData = await signupRes.json();
 
-      if (res.ok) {
-        setUser({ username: userInfo.email }); // Optional: auto login
-        navigate('/dashboard');
-      } else {
-        setGeneralError(data.error || 'Signup failed');
+      if (!signupRes.ok) {
+        setGeneralError(signupData.error || 'Signup failed');
+        setLoading(false);
+        return;
       }
+
+      // 2. Immediately login after signup (get tokens)
+      const loginRes = await fetch('http://localhost:8000/api/token/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: userInfo.email,
+          password: userInfo.password,
+        }),
+      });
+
+      const loginData = await loginRes.json();
+
+      if (!loginRes.ok) {
+        setGeneralError(loginData.detail || 'Auto-login failed');
+        setLoading(false);
+        return;
+      }
+
+      const { access, refresh } = loginData;
+
+      // 3. Store tokens
+      localStorage.setItem('access_token', access);
+      localStorage.setItem('refresh_token', refresh);
+
+      // 4. Decode access token and set user
+      const decoded = jwtDecode(access);
+      setUser({ username: decoded.username, email: decoded.email });
+
+      navigate('/dashboard');
     } catch (err) {
       setGeneralError('Server error. Please try again.');
     }
 
     setLoading(false);
-  };
-
-  const handleGoogleSignUp = () => {
-    navigate('/dashboard');
   };
 
   return (
@@ -105,16 +131,7 @@ function SignUp() {
           <p className="text-red-500 text-center mb-4">{generalError}</p>
         )}
 
-        <button
-          onClick={handleGoogleSignUp}
-          className="w-full py-2 mb-6 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded transition"
-        >
-          <FontAwesomeIcon icon={faGoogle} />
-          Sign up with Google
-        </button>
-
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name */}
           <div className="relative">
             <FontAwesomeIcon icon={faUser} className="absolute left-3 top-3 text-gray-400" />
             <input
@@ -127,7 +144,6 @@ function SignUp() {
             {error.name && <p className="text-red-500 text-sm mt-1">{error.name}</p>}
           </div>
 
-          {/* Email */}
           <div className="relative">
             <FontAwesomeIcon icon={faEnvelope} className="absolute left-3 top-3 text-gray-400" />
             <input
@@ -140,7 +156,6 @@ function SignUp() {
             {error.email && <p className="text-red-500 text-sm mt-1">{error.email}</p>}
           </div>
 
-          {/* Password */}
           <div className="relative">
             <FontAwesomeIcon icon={faLock} className="absolute left-3 top-3 text-gray-400" />
             <input
@@ -175,6 +190,17 @@ function SignUp() {
           Already have an account?{' '}
           <Link to="/signin" className="font-semibold hover:underline">
             Log in
+          </Link>
+        </div>
+
+        {/* Back to Visualizer Link */}
+        <div className="mt-4 flex justify-center">
+          <Link
+            to="/"
+            className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition font-medium shadow-sm text-sm"
+          >
+            <FontAwesomeIcon icon={faArrowRight} className="mr-1 rotate-180" />
+            Back to Visualizer
           </Link>
         </div>
       </div>

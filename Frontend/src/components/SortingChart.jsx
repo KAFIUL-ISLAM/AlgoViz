@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { SortingContext } from "../contexts/SortingContext.jsx";
 import algorithmInfos from "../data/algorithmInfos.js";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
+import { Link } from "react-router-dom";
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 
 function SortingChart() {
@@ -56,29 +57,30 @@ function SortingChart() {
                         <MoonIcon className="h-6 w-6" />
                     )}
                 </button>
-                <button
-                onClick={() => setIsDark(!isDark)}
-                className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
-                title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-                >
-                <img
-                    src="/login.png"
-                    alt="Logo"
-                    className="h-6 w-6 object-contain"
-                />
-                </button>
-
-                <button
-                onClick={() => setIsDark(!isDark)}
-                className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
-                title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-                >
-                <img
-                    src="/sign.png"
-                    alt="Logo"
-                    className="h-6 w-6 object-contain"
-                />
-                </button>
+                <Link to="/signin">
+                  <button
+                    className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
+                    title="Sign In"
+                  >
+                    <img
+                        src="/login.png"
+                        alt="Sign In"
+                        className="h-6 w-6 object-contain"
+                    />
+                  </button>
+                </Link>
+                <Link to="/signup">
+                  <button
+                    className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
+                    title="Sign Up"
+                  >
+                    <img
+                        src="/sign.png"
+                        alt="Sign Up"
+                        className="h-6 w-6 object-contain"
+                    />
+                  </button>
+                </Link>
                 </div>
 
                 </div>

@@ -3,19 +3,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 function SignOut() {
-  const { setUser } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Clear local user state
-    setUser(null);
+    // Clear auth tokens and user state
+    logout();
 
-    // Optional: Call backend logout API
-    fetch('http://localhost:8000/api/signout/', {
-      method: 'POST',
-      credentials: 'include'  // Required for session cookies
-    }).catch(err => console.error('Logout failed:', err));
-  }, [setUser]);
+    // Optional: If you had backend token blacklisting (not needed in JWT by default)
+    // fetch('http://localhost:8000/api/signout/', {
+    //   method: 'POST',
+    //   credentials: 'include'
+    // }).catch(err => console.error('Logout failed:', err));
+  }, [logout]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-carbon px-4">
