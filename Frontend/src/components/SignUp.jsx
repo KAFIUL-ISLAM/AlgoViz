@@ -10,9 +10,12 @@ import {
   faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { useAuth } from '../contexts/AuthContext';
 
 function SignUp() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
+
   const [showPassword, setShowPassword] = useState(false);
   const [userInfo, setUserInfo] = useState({
     name: '',
@@ -21,6 +24,7 @@ function SignUp() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
+  const [generalError, setGeneralError] = useState('');
 
   const validateForm = () => {
     let valid = true;
@@ -54,15 +58,36 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setGeneralError('');
 
-    if (validateForm()) {
-      setTimeout(() => {
-        setLoading(false);
-        navigate('/dashboard');
-      }, 1500);
-    } else {
+    if (!validateForm()) {
       setLoading(false);
+      return;
     }
+
+    try {
+      const res = await fetch('http://localhost:8000/api/signup/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: userInfo.email,
+          password: userInfo.password
+        })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setUser({ username: userInfo.email }); // Optional: auto login
+        navigate('/dashboard');
+      } else {
+        setGeneralError(data.error || 'Signup failed');
+      }
+    } catch (err) {
+      setGeneralError('Server error. Please try again.');
+    }
+
+    setLoading(false);
   };
 
   const handleGoogleSignUp = () => {
@@ -75,6 +100,10 @@ function SignUp() {
         <h2 className="text-2xl font-semibold text-center text-slate-800 dark:text-white mb-6">
           Create an account on <span className="text-turquoise-dark">AlgoViz</span>
         </h2>
+
+        {generalError && (
+          <p className="text-red-500 text-center mb-4">{generalError}</p>
+        )}
 
         <button
           onClick={handleGoogleSignUp}
@@ -90,8 +119,7 @@ function SignUp() {
             <FontAwesomeIcon icon={faUser} className="absolute left-3 top-3 text-gray-400" />
             <input
               type="text"
-              className={`pl-10 pr-4 py-2 w-full border rounded focus:outline-none focus:ring ${error.name ? 'border-red-500' : 'border-gray-300'
-                }`}
+              className={`pl-10 pr-4 py-2 w-full border rounded focus:outline-none focus:ring ${error.name ? 'border-red-500' : 'border-gray-300'}`}
               placeholder="Full Name"
               value={userInfo.name}
               onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
@@ -104,8 +132,7 @@ function SignUp() {
             <FontAwesomeIcon icon={faEnvelope} className="absolute left-3 top-3 text-gray-400" />
             <input
               type="email"
-              className={`pl-10 pr-4 py-2 w-full border rounded focus:outline-none focus:ring ${error.email ? 'border-red-500' : 'border-gray-300'
-                }`}
+              className={`pl-10 pr-4 py-2 w-full border rounded focus:outline-none focus:ring ${error.email ? 'border-red-500' : 'border-gray-300'}`}
               placeholder="Email"
               value={userInfo.email}
               onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
@@ -118,8 +145,7 @@ function SignUp() {
             <FontAwesomeIcon icon={faLock} className="absolute left-3 top-3 text-gray-400" />
             <input
               type={showPassword ? 'text' : 'password'}
-              className={`pl-10 pr-10 py-2 w-full border rounded focus:outline-none focus:ring ${error.password ? 'border-red-500' : 'border-gray-300'
-                }`}
+              className={`pl-10 pr-10 py-2 w-full border rounded focus:outline-none focus:ring ${error.password ? 'border-red-500' : 'border-gray-300'}`}
               placeholder="Password"
               value={userInfo.password}
               onChange={(e) => setUserInfo({ ...userInfo, password: e.target.value })}

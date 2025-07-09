@@ -9,14 +9,17 @@ import {
   faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { useAuth } from '../contexts/AuthContext'; 
 
 function SignIn() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState({ email: '', password: '' });
+  const [error, setError] = useState({ email: '', password: '', general: '' });
 
   const validateForm = () => {
     let valid = true;
@@ -46,14 +49,31 @@ function SignIn() {
     e.preventDefault();
     setLoading(true);
 
-    if (validateForm()) {
-      setTimeout(() => {
-        setLoading(false);
-        navigate('/dashboard');
-      }, 1500);
-    } else {
+    if (!validateForm()) {
       setLoading(false);
+      return;
     }
+
+    try {
+      const res = await fetch('http://localhost:8000/api/signin/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: email, password })  // Using email as username
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setUser({ username: email });  // Set login state
+        navigate('/dashboard');        // Redirect
+      } else {
+        setError(prev => ({ ...prev, general: data.error || 'Login failed' }));
+      }
+    } catch (err) {
+      setError(prev => ({ ...prev, general: 'Server error. Try again later.' }));
+    }
+
+    setLoading(false);
   };
 
   const handleGoogleLogin = () => {
@@ -64,8 +84,12 @@ function SignIn() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-carbon px-4">
       <div className="w-full max-w-md p-6 bg-white dark:bg-carbon-light rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold text-center text-slate-800 dark:text-white mb-6">
-          Welcome to <span className="text-turquoise-dark">SmartSpend</span>
+          Welcome to <span className="text-turquoise-dark">AlgoViz</span>
         </h2>
+
+        {error.general && (
+          <p className="text-red-500 text-center mb-4">{error.general}</p>
+        )}
 
         <button
           onClick={handleGoogleLogin}
