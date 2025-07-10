@@ -203,7 +203,7 @@ function SortingProvider({ children }) {
         await quickSortHelper(arr, i, end);
     }
 
-    const radixSort = async () => {
+    const bucketSort = async () => {
         let arr = sortingState.array.map((item) => item.value);
         let maxDigitCount = mostDigits(arr);
 
@@ -230,7 +230,7 @@ function SortingProvider({ children }) {
         "selection_sort": selectionSort,
         "merge_sort": mergeSort,
         "quick_sort": quickSort,
-        "radix_sort": radixSort
+        "bucket_sort": bucketSort
     }
 
     const startVisualizing = async () => {

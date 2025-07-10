@@ -19,11 +19,11 @@ function SortingChart() {
     useEffect(() => {
         if (isDark) {
             document.documentElement.classList.add("dark");
-            document.body.classList.add("dark:bg-carbon", "dark:text-white");
+            document.body.classList.add("dark");
             document.body.classList.remove("bg-gray-50", "text-slate-800");
         } else {
             document.documentElement.classList.remove("dark");
-            document.body.classList.remove("dark:bg-carbon", "dark:text-white");
+            document.body.classList.remove("dark");
             document.body.classList.add("bg-gray-50", "text-slate-800");
         }
     }, [isDark]);
@@ -57,7 +57,7 @@ function SortingChart() {
 
             {/* Algorithm Buttons */}
             <div className="flex flex-wrap justify-center gap-3 my-6">
-                {["bubble_sort", "insertion_sort", "selection_sort", "merge_sort", "quick_sort", "Bucket_sort"].map((algo) => (
+                {["bubble_sort", "insertion_sort", "selection_sort", "merge_sort", "quick_sort", "bucket_sort"].map((algo) => (
                     <button
                         key={algo}
                         onClick={() => changeAlgorithm(algo)}
