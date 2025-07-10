@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { SortingContext } from "../contexts/SortingContext.jsx";
 import algorithmInfos from "../data/algorithmInfos.js";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
+import AppHeader from "./AppHeader";
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 
 function SortingChart() {
@@ -28,66 +30,7 @@ function SortingChart() {
     return (
         <div className="mt-4 mb-4 flex flex-col items-center">
             {/* Header */}
-            <div className="flex items-center justify-between  py-3  w-full">
-                <div className="flex-shrink-0">
-                    <img
-                        src="/logo.png"
-                        alt="AlgoViz Logo"
-                        className="h-20 w-20 object-contain"
-                    />
-                    </div>
-               <div className="flex-1 text-center">
-                    <h1
-                        className="text-3xl sm:text-5xl font-semibold tracking-wide text-slate-800 dark:text-white"
-                        style={{ fontFamily: 'Bebas Neue, sans-serif' }}
-                    >
-                        Sorting Algorithm Visualizer
-                    </h1>
-                    </div>
-
-               <div className="flex items-center gap-2"> 
-                <button
-                    onClick={() => setIsDark(!isDark)}
-                    className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition "
-                    title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-                >
-                    {isDark ? (
-                        <SunIcon className="h-6 w-6" />
-                    ) : (
-                        <MoonIcon className="h-6 w-6" />
-                    )}
-                </button>
-                <Link to="/signin">
-                  <button
-                    className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 
-                               dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
-                    title="Sign In"
-                  >
-                    <img
-                      src="/login.png"
-                      alt="Sign In"
-                      className="h-6 w-6 object-contain 
-                                 filter dark:invert dark:brightness-150"
-                    />
-                  </button>
-                </Link>
-                <Link to="/signup">
-                  <button
-                    className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 
-                               dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
-                    title="Sign Up"
-                  >
-                    <img
-                      src="/sign.png"
-                      alt="Sign Up"
-                      className="h-6 w-6 object-contain 
-                                 filter dark:invert dark:brightness-150"
-                    />
-                  </button>
-                </Link>
-                </div>
-
-                </div>
+            <AppHeader isDark={isDark} setIsDark={setIsDark} />
             <hr className="w-full border-t border-gray-300 dark:border-gray-600 my-4" />
 
             <div className="flex flex-col items-left mb-4">
