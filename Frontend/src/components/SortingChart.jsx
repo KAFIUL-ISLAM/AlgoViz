@@ -43,7 +43,7 @@ function SortingChart() {
                 </ul>
                <br />
                 
-                <div className="w-full max-w-xs h-56 mx-auto rounded-lg overflow-hidden border-2 border-turquoise-dark shadow-lg">
+                <div className="w-full mx-auto rounded-lg overflow-hidden border-2 border-turquoise-dark shadow-lg">
                 <img 
                 src="/pp.png" 
                 alt="Sorting Illustration" 
@@ -57,7 +57,7 @@ function SortingChart() {
 
             {/* Algorithm Buttons */}
             <div className="flex flex-wrap justify-center gap-3 my-6">
-                {["bubble_sort", "insertion_sort", "selection_sort", "merge_sort", "quick_sort", "radix_sort"].map((algo) => (
+                {["bubble_sort", "insertion_sort", "selection_sort", "merge_sort", "quick_sort", "Bucket_sort"].map((algo) => (
                     <button
                         key={algo}
                         onClick={() => changeAlgorithm(algo)}
