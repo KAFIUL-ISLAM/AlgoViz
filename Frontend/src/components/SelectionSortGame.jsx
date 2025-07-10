@@ -53,7 +53,8 @@ export default function SelectionSortGame() {
       </h2>
 
       <p className="mb-4 text-gray-600 dark:text-white-light text-sm text-center">
-        Click once to select the current index. Click again to swap with another element.
+        Click once to select the current index. Click again to swap with another
+        element.
       </p>
 
       <div className="flex justify-center gap-4 flex-wrap mb-6">

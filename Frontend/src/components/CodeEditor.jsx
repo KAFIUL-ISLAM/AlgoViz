@@ -43,9 +43,9 @@ const CodeEditor = () => {
   };
 
   return (
-    <div className="p-4 border rounded shadow bg-white dark:bg-carbon h-full flex flex-col">
+    <div className="p-4 border rounded shadow bg-white dark:bg-carbon h-full flex flex-col items-start text-left">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between w-fullmb-4">
         <h2 className="text-xl font-bold text-[#2B7A70]">
           Sorting Algorithm Code Editor
         </h2>
