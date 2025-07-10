@@ -3,12 +3,16 @@ import React, { useState } from "react";
 const CodeEditor = () => {
   const [language, setLanguage] = useState("javascript");
   const [code, setCode] = useState();
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState("");}
   
 
+function SmallPracticeBox() {
+  const [code, setCode] = useState(`print("Hello World!")`);
+  const [output, setOutput] = useState("");}
+
+
   const runCode = async () => {
-   
-  };
+ 
 
 
   return (
@@ -31,20 +35,24 @@ const CodeEditor = () => {
           <option value="cpp">C++ (Not supported yet)</option>
         </select>
       </div>
+          <div className="flex justify-between items-center">
+            {/* ▶️ Run button */}
+            <button
+              onClick={runCode}
+              className="px-6 py-2 bg-[#2B7A70] text-white rounded hover:bg-[#1E293B] transition"
+            >
+              ▶️ Run
+            </button>
 
-      
-
-     
-        <button
-          onClick={runCode}
-          className="px-6 py-2 bg-[#2B7A70] text-white rounded hover:bg-[#1E293B] transition"
-        >
-          ▶️ Run
-        </button>
-      <h3 className="mt-6 mb-2 text-lg font-semibold">Output:</h3>
-      <pre className="bg-gray-100 p-3 rounded whitespace-pre-wrap min-h-[60px]">
-        {output}
-      </pre>
+            {/* 🔄 Refresh button */}
+            <button
+              onClick={() => window.location.reload()}
+              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition"
+              title="Refresh"
+            >
+              🔄
+            </button>
+          </div>
     </div>
     
   );
