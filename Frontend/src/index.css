@@ -161,6 +161,7 @@ body.dark {
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    padding: 0px 40px;
 }
 
 .dark .chart-container {
@@ -176,7 +177,11 @@ body.dark {
     left: 0;
     width: 100%;
     height: 16px;
-    background: linear-gradient(90deg, rgba(34, 211, 238, 0.2), rgba(6, 182, 212, 0.2));
+    background: linear-gradient(90deg, rgba(6, 182, 212, 0.3), rgba(8, 145, 178, 0.3));
+}
+
+.dark .base {
+    background: linear-gradient(90deg, rgba(34, 211, 238, 0.4), rgba(6, 182, 212, 0.4));
 }
 
 /* 🧊 Cube Wrapper */
@@ -186,54 +191,71 @@ body.dark {
     justify-content: flex-end;
     align-items: center;
     position: relative;
-    width: 40px;
-    margin: 0 10px;
+    width: 50px;
+    margin: 0 8px;
+    margin-bottom: 0px;
 }
 
 /* 🟦 Front Face Cube */
 .bar {
     position: relative;
-    width: 45px;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    border-radius: 0.3rem;
-    /* Improved shadow: more depth, visible on dark and light backgrounds */
-    box-shadow:
-        0 4px 16px 0 rgba(0, 0, 0, 0.18),
-        0 1.5px 4px 0 rgba(0, 0, 0, 0.10);
+    width: 50px;
+    transition: transform 0.3s ease, background 0.3s ease;
+    border-radius: 0.5rem 0.5rem 0 0;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    /* Add border for visibility in dark mode */
-    border: 1.5px solid rgba(255, 255, 255, 0.18);
-}
-
-/* Add a stronger border in dark mode for contrast */
-body.dark .bar {
-    border: 1.5px solid rgba(255, 255, 255, 0.28);
-    /* Add a light glow for visibility in dark mode */
+    border: 2px solid rgba(255, 255, 255, 0.2);
     box-shadow:
-        0 6px 24px 0 rgba(0, 0, 0, 0.32),
-        0 2px 8px 0 rgba(0, 0, 0, 0.18),
-        0 0 12px 2px rgba(34, 211, 238, 0.18),
-        /* cyan glow */
-        0 0 6px 1px rgba(255, 255, 255, 0.10);
-    /* subtle white glow */
+        0 4px 20px 0 rgba(0, 0, 0, 0.15),
+        0 2px 8px 0 rgba(0, 0, 0, 0.08);
 }
 
-/* 🔷 Bar States */
+/* Enhanced border and shadow in dark mode */
+body.dark .bar {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 6px 28px 0 rgba(0, 0, 0, 0.4),
+        0 3px 12px 0 rgba(0, 0, 0, 0.2),
+        0 0 15px 3px rgba(34, 211, 238, 0.15);
+}
+
+/* 🔷 Bar States with Gradient Colors */
 .bar-idle {
-    background-color: #05daba;
-    /* blue-400 */
+    background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+}
+
+.dark .bar-idle {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%);
 }
 
 .bar-selected {
-    background-color: #f038c2;
-    /* amber-400 */
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+    animation: pulse-selected 1.5s ease-in-out infinite;
+}
+
+.dark .bar-selected {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
 }
 
 .bar-swapped {
-    background-color: #f64a4a;
-    /* red-400 */
+    background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+    animation: pulse-swapped 1s ease-in-out infinite;
+}
+
+.dark .bar-swapped {
+    background: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 50%, #0d9488 100%);
+}
+
+/* Pulse animations for visual feedback */
+@keyframes pulse-selected {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes pulse-swapped {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
 }
 
 /* 🎚️ Left face */
@@ -266,28 +288,108 @@ body.dark .bar {
 
 /* 🌐 Responsive */
 @media screen and (max-width: 770px) {
+    .chart-container {
+        padding: 20px 30px;
+    }
+    
     .bar-container {
-        margin: 0 8px;
-        transform: scaleX(0.7);
-        min-width: 28px;
+        margin: 0 4px;
+        transform: scaleX(0.8);
+        min-width: 32px;
+        width: 40px;
     }
 
     .bar-container p {
-        transform: scaleY(0.7);
+        transform: scaleX(1.25) scaleY(0.8);
+        font-size: 10px;
+    }
+    
+    .bar {
+        width: 40px;
+    }
+    
+    /* Reduce 3D effect for smaller screens */
+    .bar:before {
+        width: 12px;
+        left: -12px;
+    }
+    
+    .bar:after {
+        width: 32px;
+        left: -6px;
+        top: -12px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .chart-container {
+        height: 300px;
+        padding: 20px 25px;
+    }
+
+    .bar-container {
+        margin: 0 3px;
+        transform: scaleX(0.7);
+        min-width: 24px;
+        width: 30px;
+    }
+
+    .bar-container p {
+        transform: scaleX(1.43) scaleY(0.7);
+        font-size: 9px;
+    }
+    
+    .bar {
+        width: 30px;
+    }
+    
+    /* Further reduce 3D effect */
+    .bar:before {
+        width: 10px;
+        left: -10px;
+    }
+    
+    .bar:after {
+        width: 25px;
+        left: -5px;
+        top: -10px;
     }
 }
 
 @media screen and (max-width: 450px) {
     .chart-container {
         height: 250px;
+        padding: 20px;
+        overflow-x: auto;
+        justify-content: flex-start;
     }
 
     .bar-container {
-        margin: 0 5px;
-        transform: scaleX(0.5);
+        margin: 0 2px;
+        transform: scaleX(0.6);
+        min-width: 20px;
+        width: 25px;
+        flex-shrink: 0;
     }
 
     .bar-container p {
-        transform: scaleY(0.5);
+        transform: scaleX(1.67) scaleY(0.6);
+        font-size: 8px;
+    }
+    
+    .bar {
+        width: 25px;
+    }
+    
+    /* Minimal 3D effect for very small screens */
+    .bar:before {
+        width: 8px;
+        left: -8px;
+    }
+    
+    .bar:after {
+        width: 20px;
+        left: -4px;
+        top: -8px;
     }
 }

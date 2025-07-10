@@ -122,8 +122,14 @@ function SignUp() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-md p-6 bg-white/80 dark:bg-carbon-light/90 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 dark:border-gray-700/50">
-        <h2 className="text-2xl font-semibold text-center text-slate-800 dark:text-white mb-6">
+      <div className="w-full max-w-md p-6 bg-white/80 dark:bg-carbon-light/90 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 dark:border-gray-700/50"> 
+        <div className="flex-shrink-0 flex justify-center mb-3">
+                <img
+                    src="/logo.png"
+                    alt="AlgoViz Logo"
+                    className="h-20 w-20 object-contain"
+                />
+            </div><h2 className="text-2xl font-semibold text-center text-slate-800 dark:text-white mb-6">
           Create an account on <span className="text-turquoise-dark">AlgoViz</span>
         </h2>
 

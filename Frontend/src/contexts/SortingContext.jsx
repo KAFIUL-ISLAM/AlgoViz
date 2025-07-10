@@ -4,15 +4,15 @@ import { awaitTimeout } from "../helpers/promises.js";
 
 export const SortingContext = createContext();
 const speedMap = {
-    "slow": 1000,
-    "normal": 500,
+    "slow": 1200,
+    "normal": 600,
     "fast": 250
 }
 
 function SortingProvider({ children }) {
     const [sortingState, setSortingState] = useState({
         array: [],
-        delay: speedMap["slow"],
+        delay: speedMap["normal"],
         algorithm: "bubble_sort",
         sorted: false,
         sorting: false
@@ -251,7 +251,7 @@ function SortingProvider({ children }) {
     const changeSortingSpeed = (e) => {
         setSortingState((prev) => ({
             ...prev,
-            delay: speedMap[e.target.value] || 500
+            delay: speedMap[e.target.value] || speedMap["normal"]
         }))
     }
 
