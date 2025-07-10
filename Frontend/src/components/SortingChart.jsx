@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { SortingContext } from "../contexts/SortingContext.jsx";
 import algorithmInfos from "../data/algorithmInfos.js";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 
 function SortingChart() {
@@ -90,8 +90,8 @@ function SortingChart() {
                 </div>
             <hr className="w-full border-t border-gray-300 dark:border-gray-600 my-4" />
 
-            <div className="flex flex-col items-center mb-4">
-                <ul className="list-disc list-inside flex flex-col gap-2 text-gray-600 dark:text-white-light text-center">
+            <div className="flex flex-col items-left mb-4">
+                <ul className="list-disc list-inside flex flex-col gap-2 text-gray-600 dark:text-white-light text-left">
                     <li>Sorting a large amount of data can take a substantial amount of computing resources and time if we use an inefficient algorithm to sort.</li>
                     <li>The efficiency of the algorithm is proportional to the number of items to be sorted.</li>
                     <li>For a small amount of data, a complex sorting method may be more trouble than it is worth.</li>
@@ -205,9 +205,33 @@ function SortingChart() {
                                 ))}
                             </tbody>
                         </table>
+                       </div>
+                       <div className="flex justify-center ">
+                        <Link to="/PracticePage">
+                            
+                           <button
+                                    className="
+                                        px-8 py-3
+                                        bg-gradient-to-r from-blue-600 to-cyan-500
+                                        text-white font-semibold
+                                        rounded-full
+                                        shadow-lg
+                                        hover:from-blue-700 hover:to-cyan-600
+                                        focus:outline-none focus:ring-4 focus:ring-cyan-300
+                                        transition
+                                        duration-300
+                                        ease-in-out
+                                        transform
+                                        hover:scale-105
+                                    "
+                                    >  Go to Practice Page
+                            </button>
+                              </Link>
+                            </div>
                     </div>
-                </div>
             </div>
+            
+
         </div>
     );
 }

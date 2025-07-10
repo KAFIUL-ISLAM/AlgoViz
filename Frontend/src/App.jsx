@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import SortingChart from "./components/SortingChart";
 import SortingProvider from "./contexts/SortingContext";
 import SignIn from './components/SignIn';
+import PracticePage from "./components/PracticePage";
 import SignUp from './components/SignUp';
 import SignOut from './components/SignOut';
 import { useEffect, useState } from 'react';
 import { AuthProvider } from "./contexts/AuthContext";
-import PrivateRoute from "./components/PrivateRoutes";
 
 function App() {
     const [data, setData] = useState(null);
@@ -29,7 +30,8 @@ function App() {
                         <Route path="/" element={<SortingChart />} />
                         <Route path="/signin" element={<SignIn />} />
                         <Route path="/signup" element={<SignUp />} />
-                            <Route path="/signout" element={<SignOut />} />
+                           <Route path="/PracticePage" element={<PracticePage />} />                              
+                        <Route path="/signout" element={<SignOut />} />
                             {/* <Route
   path="/dashboard"
   element={
