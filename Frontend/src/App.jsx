@@ -11,26 +11,18 @@ import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
     const [data, setData] = useState(null);
-    useEffect(() => {
-        fetch('http://localhost:8000/api/hello/')
-          .then(res => res.json())
-          .then(data => setData(data.message));
-      }, []);
+    
     return (
         <Router>
             <AuthProvider>
             <SortingProvider>
                 <div className="container mx-auto px-4">
-                {data && (
-                    <div className="bg-blue-100 text-blue-800 text-center py-2 rounded mb-4">
-                        {data}
-                    </div>
-                )}
+                
                     <Routes>
                         <Route path="/" element={<SortingChart />} />
                         <Route path="/signin" element={<SignIn />} />
                         <Route path="/signup" element={<SignUp />} />
-                           <Route path="/PracticePage" element={<PracticePage />} />                              
+                        <Route path="/PracticePage" element={<PracticePage />} />                              
                         <Route path="/signout" element={<SignOut />} />
                             {/* <Route
   path="/dashboard"

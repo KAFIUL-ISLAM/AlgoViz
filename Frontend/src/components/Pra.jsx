@@ -6,14 +6,11 @@ function PracticePage() {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef(null);
-
-
-
   const resetTimer = () => {
   clearInterval(intervalRef.current); // stop the interval
   setIsRunning(false);             
-  setSeconds(0);                      
-  }
+  setSeconds(0);  }                    
+
 
   useEffect(() => {
     
@@ -65,11 +62,10 @@ function PracticePage() {
 
                 <button
                     onClick={resetTimer}
-                    className="p-5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition text-xl"
-                    title="Refresh Timer"
-                    >
-                    🔄
-                    </button>
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-500 text-white rounded-full hover:bg-gray-700 transition text-sm"
+                >
+                    🔄 Refresh
+                </button>
             </div>
         </div>
 
@@ -89,21 +85,13 @@ function PracticePage() {
         knowledge.
       </p>
 
-            <div className="p-8">
-                <h1 className="text-2xl font-bold mb-6 text-[#2B7A70] text-center">
-                Practice Code Online
-                </h1>
-                <div className="grid grid-cols-1 gap-8">
-                     
-                        <PythonEditor />         
-              
-                                    
-                        <CodeEditor />
-                    </div>
-          
-            </div>
-           
+      <div className="p-8">
+        <h1 className="text-2xl font-bold mb-6 text-[#2B7A70] text-center">
+          Practice Code Online
+        </h1>
+        <CodeEditor />
+      </div>
     </div>
   );
-}
-export default PracticePage;
+}}
+export default Pra;

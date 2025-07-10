@@ -1,7 +1,6 @@
 import { createContext, useState } from "react";
-
-import { getRandomNumber, getDigit, mostDigits } from "../helpers/math";
-import { awaitTimeout } from "../helpers/promises";
+import { getRandomNumber, getDigit, mostDigits } from "../helpers/math.jsx";
+import { awaitTimeout } from "../helpers/promises.js";
 
 export const SortingContext = createContext();
 const speedMap = {
