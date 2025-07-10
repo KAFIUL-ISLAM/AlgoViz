@@ -26,7 +26,7 @@ function SortingChart() {
     }, [isDark]);
 
     return (
-        <div className="mt-4 mb-4 flex flex-col ">
+        <div className="mt-4 mb-4 flex flex-col items-center">
             {/* Header */}
             <div className="flex items-center justify-between  py-3  w-full">
                 <div className="flex-shrink-0">
@@ -59,25 +59,29 @@ function SortingChart() {
                 </button>
                 <Link to="/signin">
                   <button
-                    className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
+                    className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 
+                               dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
                     title="Sign In"
                   >
                     <img
-                        src="/login.png"
-                        alt="Sign In"
-                        className="h-6 w-6 object-contain"
+                      src="/login.png"
+                      alt="Sign In"
+                      className="h-6 w-6 object-contain 
+                                 filter dark:invert dark:brightness-150"
                     />
                   </button>
                 </Link>
                 <Link to="/signup">
                   <button
-                    className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
+                    className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 
+                               dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
                     title="Sign Up"
                   >
                     <img
-                        src="/sign.png"
-                        alt="Sign Up"
-                        className="h-6 w-6 object-contain"
+                      src="/sign.png"
+                      alt="Sign Up"
+                      className="h-6 w-6 object-contain 
+                                 filter dark:invert dark:brightness-150"
                     />
                   </button>
                 </Link>
@@ -125,13 +129,12 @@ function SortingChart() {
                 <div className="mb-4 chart-container">
                     <div className="base"></div>
                     {sortingState.array.map((bar, i) => (
-                        <div key={i} className="bar-container">
+                        <div key={i} className="bar-container flex flex-col items-center">
+                            <p className="mb-1 text-xs font-bold text-slate-700 dark:text-white">{bar.value}</p>
                             <div
-                                className={`select-none bar bar-${bar.state}`}
+                                className={`select-none bar bar-${bar.state} w-full`}
                                 style={{ height: `${Math.floor((bar.value / 1000) * 100)}%` }}
-                            >
-                                <p className={`pl-1.5 ${bar.state === "idle" ? "text-white" : "text-white"}`}>{bar.value}</p>
-                            </div>
+                            />
                         </div>
                     ))}
                 </div>
