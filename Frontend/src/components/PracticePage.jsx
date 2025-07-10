@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import CodeEditor from "./CodeEditor";
-import { Link } from "react-router-dom";
 import SelectionSortGame from "./SelectionSortGame";
 import MergeSortGame from "./MergeSortGame";
 
@@ -89,13 +88,29 @@ function PracticePage() {
         </div>
       </div>
 
-      {/* 💻 Code Editor (Bottom full width) */}
-      <div className="px-8 mt-12 mb-16">
-        <h2 className="text-xl font-bold text-[#2B7A70] mb-4 text-center">
-          Try Writing Sorting Code
+      {/* 💻 Code Editor (Right) and Placeholder (Left) Side by Side */}
+      <div className="px-8 mt-12 mb-16 max-w-6xl mx-auto">
+        <h2 className="text-xl font-bold text-[#2B7A70] mb-6 text-center">
+          Try Writing Sorting Code and Another Exercise
         </h2>
-        <div className="w-full max-w-4xl mx-auto">
-          <CodeEditor />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Left side placeholder */}
+          <div className="border rounded p-6 shadow bg-white dark:bg-carbon flex flex-col justify-center">
+            <h3 className="text-lg font-semibold mb-4 text-[#2B7A70] text-center">
+              Another Exercise
+            </h3>
+            <p className="text-gray-700 dark:text-white-light text-center">
+              This space is reserved for a future exercise or challenge.
+            </p>
+          </div>
+
+          {/* Right side Code Editor */}
+          <div className="border rounded p-6 shadow bg-white dark:bg-carbon">
+            <h3 className="text-lg font-semibold mb-4 text-[#2B7A70] text-center">
+              Sorting Algorithm Code Editor
+            </h3>
+            <CodeEditor />
+          </div>
         </div>
       </div>
     </div>
