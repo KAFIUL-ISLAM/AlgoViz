@@ -1,12 +1,18 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+<<<<<<< HEAD
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from django.contrib.auth import logout
+=======
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, logout
 from django.utils.crypto import get_random_string
 from django.core.cache import cache  
 import os
 from django.core.mail import send_mail
+>>>>>>> 6589919014a48e9ea1da4f459883ac7b17128838
 
 from django.conf import settings
 from dotenv import load_dotenv
@@ -99,16 +105,29 @@ def signin(request):
 
     user = authenticate(username=username, password=password)
     if user is not None:
+<<<<<<< HEAD
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'message': 'Login successful'
+        }, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+=======
         return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
     else:
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+>>>>>>> 6589919014a48e9ea1da4f459883ac7b17128838
 @api_view(['POST'])
 def signout(request):
     logout(request)
     return Response({'message': 'Logged out successfully'})
 
+<<<<<<< HEAD
+=======
 
 @api_view(['POST'])
 def openai_api_view(request):
@@ -131,3 +150,4 @@ def openai_api_view(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+>>>>>>> 6589919014a48e9ea1da4f459883ac7b17128838

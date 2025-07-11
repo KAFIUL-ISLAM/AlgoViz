@@ -112,7 +112,7 @@ function SignUp() {
       const decoded = jwtDecode(access);
       setUser({ username: decoded.username, email: decoded.email });
 
-      navigate('/dashboard');
+      navigate('/practicepage');
     } catch (err) {
       setGeneralError('Server error. Please try again.');
     }
