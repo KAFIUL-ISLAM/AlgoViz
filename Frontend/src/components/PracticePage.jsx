@@ -101,31 +101,10 @@ function PracticePage() {
           </div>
 
           {/* Right: Code Editor with AI Helper */}
-          <div className="border rounded p-6 shadow bg-white dark:bg-carbon">
-            <h2 className="text-lg font-bold text-[#2B7A70] mb-4 text-center">
-              Try Writing Sorting Code
-            </h2>
-            <CodeEditor />
 
-            {/* 🤖 AI Assistant Toggle */}
-            <div className="mt-6">
-              {!showAIBox ? (
-                <div className="flex justify-center">
-                  <button
-                    onClick={() => setShowAIBox(true)}
-                    className="p-3 bg-[#2B7A70] text-white rounded-full hover:bg-[#1E293B] shadow-lg"
-                    title="Ask AI for help"
-                  >
-                    <FaRobot size={24} />
-                  </button>
-                </div>
-              ) : (
-                <div className="mt-4">
-                  <AIBox />
-                </div>
-              )}
-            </div>
-          </div>
+          <CodeEditor />
+
+          {/* 🤖 AI Assistant Toggle */}
         </div>
       </div>
     </div>
