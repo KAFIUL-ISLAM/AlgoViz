@@ -1,15 +1,2 @@
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-env/
-venv/
-.env
-
-# VS Code
-.vscode/
-
-# Django stuff
-*.sqlite3
-/staticfiles/
+# Created by venv; see https://docs.python.org/3/library/venv.html
+*

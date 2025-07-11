@@ -1,18 +1,15 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-<<<<<<< HEAD
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from django.contrib.auth import logout
-=======
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, logout
 from django.utils.crypto import get_random_string
 from django.core.cache import cache  
 import os
 from django.core.mail import send_mail
->>>>>>> 6589919014a48e9ea1da4f459883ac7b17128838
 
 from django.conf import settings
 from dotenv import load_dotenv
@@ -35,27 +32,69 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 @api_view(['POST'])
 def forgot_password(request):
     email = request.data.get('email')
+    
+    if not email:
+        return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         user = User.objects.get(email__iexact=email)
         
-
-
         # Generate a random token
         token = get_random_string(length=32)
         
-        # Save token in cache for 15 mins (900 sec), or use DB
+        # Save token in cache for 15 mins (900 sec)
         cache.set(token, user.username, timeout=900)
 
+        # Check if we're in development mode
+        from config.dev_settings import DEV_MODE
+        
+        if DEV_MODE:
+            # Development mode: return token for testing
+            return Response({
+                "message": "Reset token generated (DEV MODE).",
+                "reset_token": token,
+                "note": "In production, this would be sent via email."
+            })
+        else:
+            # Production mode: send email
+            try:
+                from django.core.mail import send_mail
+                from django.conf import settings
+                
+                send_mail(
+                    subject='Password Reset - AlgoViz',
+                    message=f'''
+Hello {user.username},
 
+You have requested a password reset for your AlgoViz account.
 
-        # In production you'd send this via email. For dev:
-        return Response({
-            "message": "Reset token generated.",
-            "reset_token": token
-        })
+Your reset token is: {token}
+
+This token will expire in 15 minutes.
+
+If you didn't request this reset, please ignore this email.
+
+Best regards,
+AlgoViz Team
+                    '''.strip(),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[email],
+                    fail_silently=False,
+                )
+                
+                return Response({
+                    "message": "Reset instructions have been sent to your email."
+                })
+                
+            except Exception as e:
+                return Response({
+                    "error": "Failed to send email. Please try again later."
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
     except User.DoesNotExist:
         return Response({"error": "No account with this email"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": "An error occurred while processing your request"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
@@ -66,6 +105,10 @@ def reset_password(request):
 
     if not token or not new_password:
         return Response({"error": "Token and new password required"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Basic password validation
+    if len(new_password) < 6:
+        return Response({"error": "Password must be at least 6 characters long"}, status=status.HTTP_400_BAD_REQUEST)
 
     username = cache.get(token)
     if not username:
@@ -76,23 +119,39 @@ def reset_password(request):
         user.set_password(new_password)
         user.save()
 
-        # Optionally delete the token
+        # Delete the token after successful reset
         cache.delete(token)
 
         return Response({"message": "Password has been reset successfully"})
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": "An error occurred while resetting password"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['POST'])
 def signup(request):
     username = request.data.get('username')
     password = request.data.get('password')
-    email = request.data.get('email')  # <-- Add this
+    email = request.data.get('email')
+
+    # Validate required fields
+    if not username or not password or not email:
+        return Response({'error': 'Username, password, and email are required'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Validate email format
+    import re
+    email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    if not re.match(email_pattern, email):
+        return Response({'error': 'Invalid email format'}, status=status.HTTP_400_BAD_REQUEST)
 
     if User.objects.filter(username=username).exists():
         return Response({'error': 'User already exists'}, status=status.HTTP_400_BAD_REQUEST)
     
-    user = User.objects.create_user(username=username, password=password, email=email)  # <-- save email
+    # Check if email already exists
+    if User.objects.filter(email=email).exists():
+        return Response({'error': 'Email already registered'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    user = User.objects.create_user(username=username, password=password, email=email)
     user.save()
     return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
 
@@ -105,7 +164,6 @@ def signin(request):
 
     user = authenticate(username=username, password=password)
     if user is not None:
-<<<<<<< HEAD
         refresh = RefreshToken.for_user(user)
         return Response({
             'refresh': str(refresh),
@@ -114,20 +172,13 @@ def signin(request):
         }, status=status.HTTP_200_OK)
     else:
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-=======
-        return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
-    else:
-        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
->>>>>>> 6589919014a48e9ea1da4f459883ac7b17128838
 @api_view(['POST'])
 def signout(request):
     logout(request)
     return Response({'message': 'Logged out successfully'})
 
-<<<<<<< HEAD
-=======
 
 @api_view(['POST'])
 def openai_api_view(request):
@@ -150,4 +201,3 @@ def openai_api_view(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
->>>>>>> 6589919014a48e9ea1da4f459883ac7b17128838
