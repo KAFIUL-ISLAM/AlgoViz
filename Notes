@@ -2,3 +2,13 @@ algorithmInfos[sortingState.algorithm].name
 
 npm install react-live
 npm install @monaco-editor/react
+Sorting mode selection (Selection Sort)
+
+User-controlled swapping
+
+10-second countdown timer
+
+"Loser" message if time runs out
+
+Game refreshes automatically after failure
+
