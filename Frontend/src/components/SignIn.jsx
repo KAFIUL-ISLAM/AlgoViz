@@ -162,7 +162,7 @@ function SignIn() {
         </form>
 
         <div className="text-center text-sm mt-4 text-slate-600 dark:text-white-light">
-          <Link to="/dashboard" className="hover:underline">
+          <Link to="/ForgotPassword" className="hover:underline">
             Forgot password?
           </Link>
           <p className="mt-2">

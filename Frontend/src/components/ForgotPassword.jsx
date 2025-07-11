@@ -34,9 +34,17 @@ function ForgotPassword() {
       const data = await res.json();
       
       if (res.ok) {
-        setToken(data.reset_token || "");
-        setStep(2);
-        setMessage("Reset token generated successfully!");
+        if (data.reset_token) {
+          // Development mode: token is provided
+          setToken(data.reset_token);
+          setStep(2);
+          setMessage("Reset token generated! (Development Mode)");
+        } else {
+          // Production mode: token sent via email
+          setToken("");
+          setStep(2);
+          setMessage("Reset instructions have been sent to your email. Please check your inbox and enter the reset token below.");
+        }
       } else {
         setError(data.error || "Failed to generate reset token");
       }
@@ -167,12 +175,51 @@ function ForgotPassword() {
           {/* Step 2: Password Reset */}
           {step === 2 && (
             <div className="space-y-4">
-              <div className="p-3 bg-slate-100 dark:bg-gray-700 rounded-lg">
-                <p className="text-sm text-slate-600 dark:text-gray-300 mb-1">Reset Token:</p>
-                <code className="text-xs text-slate-800 dark:text-white font-mono break-all">
-                  {token}
-                </code>
-              </div>
+              {token ? (
+                // Development mode: show token
+                <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                  <div className="flex items-center mb-2">
+                    <span className="text-yellow-600 dark:text-yellow-400 text-lg mr-2">⚠️</span>
+                    <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200">Development Mode</p>
+                  </div>
+                  <p className="text-sm text-yellow-700 dark:text-yellow-300 mb-2">
+                    Your reset token (in production this would be sent via email):
+                  </p>
+                  <code className="block p-2 bg-yellow-100 dark:bg-yellow-900/40 rounded text-xs font-mono break-all text-yellow-900 dark:text-yellow-100">
+                    {token}
+                  </code>
+                </div>
+              ) : (
+                // Production mode: check email
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                  <div className="flex items-center mb-2">
+                    <span className="text-blue-600 dark:text-blue-400 text-lg mr-2">📧</span>
+                    <p className="text-sm font-medium text-blue-800 dark:text-blue-200">Check Your Email</p>
+                  </div>
+                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                    We've sent a reset token to your email address. Please check your inbox and enter the token below.
+                  </p>
+                </div>
+              )}
+
+              {!token && (
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+                    Reset Token
+                  </label>
+                  <input
+                    type="text"
+                    value={token}
+                    placeholder="Enter the token from your email"
+                    onChange={(e) => setToken(e.target.value)}
+                    disabled={loading}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-600 
+                             bg-white/50 dark:bg-gray-700/50 text-slate-700 dark:text-white
+                             focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 outline-none
+                             transition-all duration-200 disabled:opacity-50 font-mono"
+                  />
+                </div>
+              )}
               
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
@@ -244,17 +291,29 @@ function ForgotPassword() {
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto">
                 <span className="text-2xl">✅</span>
               </div>
-              <button
-                onClick={resetForm}
-                className="w-full py-3 px-4 rounded-xl font-medium text-white
-                         bg-gradient-to-r from-cyan-500 to-green-500 
-                         hover:from-cyan-600 hover:to-green-600 
-                         focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2
-                         transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]
-                         shadow-lg hover:shadow-xl"
-              >
-                Reset Another Password
-              </button>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={resetForm}
+                  className="w-full py-3 px-4 rounded-xl font-medium
+                           bg-slate-100 dark:bg-gray-700 text-slate-700 dark:text-gray-300
+                           hover:bg-slate-200 dark:hover:bg-gray-600
+                           focus:ring-2 focus:ring-slate-400 focus:ring-offset-2
+                           transition-all duration-200"
+                >
+                  Reset Another Password
+                </button>
+                <a
+                  href="/signin"
+                  className="w-full py-3 px-4 rounded-xl font-medium text-white text-center block
+                           bg-gradient-to-r from-cyan-500 to-green-500 
+                           hover:from-cyan-600 hover:to-green-600 
+                           focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2
+                           transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]
+                           shadow-lg hover:shadow-xl"
+                >
+                  Back to Login
+                </a>
+              </div>
             </div>
           )}
         </div>
