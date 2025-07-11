@@ -1,20 +1,22 @@
 import { useState, useRef, useEffect } from "react";
-import CodeEditor from "./CodeEditor";
-import SelectionSortGame from "./SelectionSortGame";
-import MergeSortGame from "./MergeSortGame";
-
+import CodeEditor from "./CodeEditor"; 
+import { Link } from "react-router-dom";
+import PythonEditor from "./PythonEditor";
 function PracticePage() {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef(null);
 
+
+
   const resetTimer = () => {
-    clearInterval(intervalRef.current);
-    setIsRunning(false);
-    setSeconds(0);
-  };
+  clearInterval(intervalRef.current); // stop the interval
+  setIsRunning(false);             
+  setSeconds(0);                      
+  }
 
   useEffect(() => {
+    
     if (isRunning) {
       intervalRef.current = setInterval(() => {
         setSeconds((prev) => prev + 1);
@@ -31,9 +33,9 @@ function PracticePage() {
 
   return (
     <div>
-      {/* ⏱ Timer and Header */}
       <div className="w-full mt-8 mb-6">
         <div className="flex items-center justify-between w-full mb-6 relative">
+          {/* Left side: Stopwatch Icon */}
           <div className="flex items-center gap-2">
             <img
               src="/favicon.png"
@@ -41,80 +43,67 @@ function PracticePage() {
               className="w-8 h-10"
             />
           </div>
+
+          {/* Center: Title */}
           <h1 className="text-2xl font-bold text-[#2B7A70]">
             Searching & Sorting Algorithms Practice
           </h1>
+
+          {/* Right side: Timer and Button */}
           <div className="flex items-center gap-4">
-            <button
-              onClick={toggleTimer}
-              className="flex items-center gap-2 px-4 py-2 bg-[#2B7A70] text-white rounded-full hover:bg-[#D93025] transition text-sm"
-            >
-              <img
-                src="/chrono.png"
-                alt="Chrono Icon"
-                className="inline w-4 h-4 mr-2"
-              />
-              {isRunning ? "Stop" : "Start "} ({seconds}s)
-            </button>
-            <button
-              onClick={resetTimer}
-              className="p-5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition text-xl"
-              title="Refresh Timer"
-            >
-              🔄
-            </button>
-          </div>
+                <button
+                    onClick={toggleTimer}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#2B7A70] text-white rounded-full hover:bg-[#D93025] transition text-sm"
+                >
+                    <img
+                    src="/chrono.png"
+                    alt="Chrono Icon"
+                    className="inline w-4 h-4 mr-2"
+                    />
+                    {isRunning ? "Stop" : "Start "} ({seconds}s)
+                </button>
+
+                <button
+                    onClick={resetTimer}
+                    className="p-5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition text-xl"
+                    title="Refresh Timer"
+                    >
+                    🔄
+                    </button>
+            </div>
         </div>
+
         <hr className="border-t-2 border-gray-300 mb-6 w-full" />
+
       </div>
 
-      {/* 📝 Paragraph */}
+      <div className="my-4 border-t border-gray-300 w-full"></div>
       <p
-        className="list-disc list-inside flex flex-col gap-2 text-gray-600 dark:text-white-light text-left px-8"
+        className="list-disc list-inside flex flex-col gap-2 text-gray-600 dark:text-white-light text-left"
         style={{ fontFamily: "'Inter', sans-serif" }}
       >
         Practice makes perfect in everything, and this is especially true when
-        learning Python or sorting algorithms. Use the games and editors below
-        to sharpen your logic!
+        learning Python. If you're a beginner, regularly practicing Python
+        exercises will build your confidence and sharpen your skills. To help
+        you improve, try these Python exercises with solutions to test your
+        knowledge.
       </p>
 
-      {/* 🧩 Games Section */}
-      <div className="px-8 mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="w-full">
-          <MergeSortGame />
-        </div>
-        <div className="w-full">
-          <SelectionSortGame />
-        </div>
-      </div>
-
-      {/* 💻 Code Editor (Right) and Placeholder (Left) Side by Side */}
-      <div className="px-8 mt-12 mb-16 max-w-6xl mx-auto">
-        <h2 className="text-xl font-bold text-[#2B7A70] mb-6 text-center">
-          Try Writing Sorting Code and Another Exercise
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Left side placeholder */}
-          <div className="border rounded p-6 shadow bg-white dark:bg-carbon flex flex-col justify-center">
-            <h3 className="text-lg font-semibold mb-4 text-[#2B7A70] text-center">
-              Another Exercise
-            </h3>
-            <p className="text-gray-700 dark:text-white-light text-center">
-              This space is reserved for a future exercise or challenge.
-            </p>
-          </div>
-
-          {/* Right side Code Editor */}
-          <div className="border rounded p-6 shadow bg-white dark:bg-carbon">
-            <h3 className="text-lg font-semibold mb-4 text-[#2B7A70] text-center">
-              Sorting Algorithm Code Editor
-            </h3>
-            <CodeEditor />
-          </div>
-        </div>
-      </div>
+            <div className="p-8">
+                <h1 className="text-2xl font-bold mb-6 text-[#2B7A70] text-center">
+                Practice Code Online
+                </h1>
+                <div className="grid grid-cols-1 gap-8">
+                     
+                        <PythonEditor />         
+              
+                                    
+                        <CodeEditor />
+                    </div>
+          
+            </div>
+           
     </div>
   );
 }
-
 export default PracticePage;

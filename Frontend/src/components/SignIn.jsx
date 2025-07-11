@@ -79,7 +79,7 @@ function SignIn() {
         const decoded = jwtDecode(access);
         setUser({ username: decoded.username, email: decoded.email });
 
-        navigate('/dashboard');
+        navigate('/PracticePage');
       } else {
         setError(prev => ({
           ...prev,

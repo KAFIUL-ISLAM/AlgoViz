@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SortingChart from "./components/SortingChart";
 import SortingProvider from "./contexts/SortingContext";
 import SignIn from './components/SignIn';
-import PracticePage from "./components/PracticePage";
+import PracticePage from "./components/practicepage";
 import SignUp from './components/SignUp';
 import SignOut from './components/SignOut';
 import { useEffect, useState } from 'react';
