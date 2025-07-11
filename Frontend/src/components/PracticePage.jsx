@@ -83,26 +83,60 @@ function PracticePage() {
         style={{ fontFamily: "'Inter', sans-serif" }}
       >
         Practice makes perfect in everything, and this is especially true when
-        learning Python. If you're a beginner, regularly practicing Python
-        exercises will build your confidence and sharpen your skills. To help
-        you improve, try these Python exercises with solutions to test your
-        knowledge.
+        learning Python or sorting algorithms. Use the games and editors below
+        to sharpen your logic!
       </p>
 
-            <div className="p-8">
-                <h1 className="text-2xl font-bold mb-6 text-[#2B7A70] text-center">
-                Practice Code Online
-                </h1>
-                <div className="grid grid-cols-1 gap-8">
-                     
-                        <PythonEditor />         
-              
-                                    
-                        <CodeEditor />
-                    </div>
-          
+      {/* 🧩 Games Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <MergeSortGame />
+        <SelectionSortGame />
+      </div>
+
+      {/* 💻 Code Editor and Extra Panel */}
+      <div className="max-w-6xl mx-auto mb-20">
+        <h2 className="text-xl font-bold text-[#2B7A70] mb-6 text-center">
+          Try Writing Sorting Code and Explore More
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Left: Placeholder */}
+          <div className="border rounded p-6 shadow bg-white dark:bg-carbon flex flex-col justify-center">
+            <h3 className="text-lg font-semibold mb-4 text-[#2B7A70] text-center">
+              Another Exercise
+            </h3>
+            <p className="text-gray-700 dark:text-white-light text-center">
+              This space is reserved for a future exercise or challenge.
+            </p>
+          </div>
+
+          {/* Right: Code Editor with AI Helper */}
+          <div className="border rounded p-6 shadow bg-white dark:bg-carbon">
+            <h2 className="text-lg font-bold text-[#2B7A70] mb-4 text-center">
+              Try Writing Sorting Code
+            </h2>
+            <CodeEditor />
+
+            {/* 🤖 AI Assistant Toggle */}
+            <div className="mt-6">
+              {!showAIBox ? (
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => setShowAIBox(true)}
+                    className="p-3 bg-[#2B7A70] text-white rounded-full hover:bg-[#1E293B] shadow-lg"
+                    title="Ask AI for help"
+                  >
+                    <FaRobot size={24} />
+                  </button>
+                </div>
+              ) : (
+                <div className="mt-4">
+                  <AIBox />
+                </div>
+              )}
             </div>
-           
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

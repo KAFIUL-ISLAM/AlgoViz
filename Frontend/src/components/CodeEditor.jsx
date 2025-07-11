@@ -12,6 +12,20 @@ const sortingQuestions = [
   "Modify Selection Sort to skip sorting if the array is already sorted.",
   "Write a function to find the minimum element's index in a given range of an array.",
 ];
+
+const expectedOutputs = [
+  "", // for Q1 - open-ended
+  "[1,2,3,5,8]", // Q2
+  "", // Q3 - open-ended
+  "[7,8,9,10]", // Q4
+  "", // Q5 - open-ended
+  "", // Q6
+  "[5,10,15,20]", // Q7
+  "[20,15,10,5]", // Q8
+  "", // Q9
+  "", // Q10
+];
+
 const CodeEditor = () => {
   const [language, setLanguage] = useState("javascript");
   const [code, setCode] = useState(``);
@@ -23,9 +37,16 @@ const CodeEditor = () => {
       if (language === "javascript") {
         // eslint-disable-next-line no-eval
         const result = eval(code);
-        setOutput(
-          result !== undefined ? String(result) : "✅ Code ran successfully."
-        );
+        const resultStr = JSON.stringify(result);
+
+        const expected = expectedOutputs[questionIndex];
+        if (expected && resultStr !== expected) {
+          setOutput(
+            `❌ Incorrect output.\nYour Output: ${resultStr}\nExpected: ${expected}`
+          );
+        } else {
+          setOutput(`✅ Correct!\nOutput: ${resultStr}`);
+        }
       } else {
         setOutput(`⚠️ Language "${language}" is not supported yet.`);
       }
