@@ -1,17 +1,14 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext.jsx";
 import { SortingContext } from "../contexts/SortingContext.jsx";
 import algorithmInfos from "../data/algorithmInfos.js";
-import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 import AppHeader from "./AppHeader";
 
-<link
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
-  rel="stylesheet"
-/>;
-
 function SortingChart() {
+  const navigate = useNavigate();
+  const { isLoggedIn } = useContext(AuthContext);
+
   const {
     sortingState,
     generateSortingArray,
@@ -19,12 +16,15 @@ function SortingChart() {
     changeSortingSpeed,
     changeAlgorithm,
   } = useContext(SortingContext);
+
   const [isDark, setIsDark] = useState(false);
 
+  // Generate initial array on mount
   useEffect(() => {
     generateSortingArray();
-  }, []);
+  }, [generateSortingArray]);
 
+  // Dark mode toggle effect
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add("dark");
@@ -36,6 +36,20 @@ function SortingChart() {
       document.body.classList.add("bg-gray-50", "text-slate-800");
     }
   }, [isDark]);
+
+  // Handle Practice button click
+  const handlePracticeClick = () => {
+    if (isLoggedIn) {
+      navigate("/PracticePage");
+    } else {
+      const goSignup = window.confirm(
+        "You need to be logged in to access the Practice Page. Do you want to sign up now?"
+      );
+      if (goSignup) {
+        navigate("/signup");
+      }
+    }
+  };
 
   return (
     <div className="mt-4 mb-4 flex flex-col items-center">
@@ -132,32 +146,32 @@ function SortingChart() {
             key={algo}
             onClick={() => changeAlgorithm(algo)}
             className={`
-                            relative px-6 py-3 rounded-2xl font-semibold text-sm
-                            transition-all duration-300 ease-out transform
-                            backdrop-blur-sm border
-                            hover:scale-105 hover:shadow-xl active:scale-95
-                            ${
-                              sortingState.algorithm === algo
-                                ? `
-                                    bg-gradient-to-r from-cyan-600 via-teal-500 to-emerald-500
-                                    dark:from-cyan-500 dark:via-teal-400 dark:to-emerald-400
-                                    text-white shadow-lg shadow-cyan-500/25
-                                    border-cyan-400/50 dark:border-cyan-300/50
-                                    hover:from-cyan-700 hover:via-teal-600 hover:to-emerald-600
-                                    dark:hover:from-cyan-600 dark:hover:via-teal-500 dark:hover:to-emerald-500
-                                `
-                                : `
-                                    bg-gradient-to-r from-gray-100 via-white to-gray-100
-                                    dark:from-gray-800 dark:via-gray-700 dark:to-gray-800
-                                    text-gray-800 dark:text-gray-200
-                                    border-gray-300/50 dark:border-gray-600/50
-                                    shadow-sm shadow-gray-500/10 dark:shadow-gray-900/20
-                                    hover:from-gray-50 hover:via-gray-100 hover:to-gray-50
-                                    dark:hover:from-gray-700 dark:hover:via-gray-600 dark:hover:to-gray-700
-                                    hover:border-gray-400/60 dark:hover:border-gray-500/60
-                                `
-                            }
-                        `}
+              relative px-6 py-3 rounded-2xl font-semibold text-sm
+              transition-all duration-300 ease-out transform
+              backdrop-blur-sm border
+              hover:scale-105 hover:shadow-xl active:scale-95
+              ${
+                sortingState.algorithm === algo
+                  ? `
+                      bg-gradient-to-r from-cyan-600 via-teal-500 to-emerald-500
+                      dark:from-cyan-500 dark:via-teal-400 dark:to-emerald-400
+                      text-white shadow-lg shadow-cyan-500/25
+                      border-cyan-400/50 dark:border-cyan-300/50
+                      hover:from-cyan-700 hover:via-teal-600 hover:to-emerald-600
+                      dark:hover:from-cyan-600 dark:hover:via-teal-500 dark:hover:to-emerald-500
+                    `
+                  : `
+                      bg-gradient-to-r from-gray-100 via-white to-gray-100
+                      dark:from-gray-800 dark:via-gray-700 dark:to-gray-800
+                      text-gray-800 dark:text-gray-200
+                      border-gray-300/50 dark:border-gray-600/50
+                      shadow-sm shadow-gray-500/10 dark:shadow-gray-900/20
+                      hover:from-gray-50 hover:via-gray-100 hover:to-gray-50
+                      dark:hover:from-gray-700 dark:hover:via-gray-600 dark:hover:to-gray-700
+                      hover:border-gray-400/60 dark:hover:border-gray-500/60
+                    `
+              }
+            `}
           >
             <span className="relative z-10">
               {algo.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
@@ -188,44 +202,43 @@ function SortingChart() {
 
         {/* Controls */}
         <div className="flex items-center gap-4 w-full mb-8">
-          {/* Start Button - Modern gradient style matching algorithm buttons */}
+          {/* Start Button */}
           <button
             disabled={sortingState.sorting}
             onClick={startVisualizing}
             className="group relative px-6 py-3 rounded-xl font-semibold text-white 
-                                 bg-gradient-to-br from-cyan-500 to-emerald-500 
-                                 dark:from-cyan-400 dark:to-emerald-400
-                                 shadow-lg hover:shadow-xl 
-                                 transform hover:scale-105 transition-all duration-200
-                                 border border-cyan-300/20 dark:border-cyan-300/30
-                                 backdrop-blur-sm
-                                 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              bg-gradient-to-br from-cyan-500 to-emerald-500 
+              dark:from-cyan-400 dark:to-emerald-400
+              shadow-lg hover:shadow-xl 
+              transform hover:scale-105 transition-all duration-200
+              border border-cyan-300/20 dark:border-cyan-300/30
+              backdrop-blur-sm
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
           >
             <span className="relative z-10">
               {sortingState.sorting ? "Sorting..." : "Start Sort"}
             </span>
             <div
               className="absolute inset-0 rounded-xl bg-gradient-to-br from-cyan-600 to-emerald-600 
-                                      opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            ></div>
+                opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            />
           </button>
 
-          {/* New Array Button - Modern subtle style */}
+          {/* New Array Button */}
           <button
             disabled={sortingState.sorting}
-            onClick={() => generateSortingArray()}
+            onClick={generateSortingArray}
             className="font-medium
-                                  
-                                 text-slate-700 dark:text-white
-                                 bg-transparent border-none shadow-none rounded-none
-    hover:underline hover:scale-105 hover:bg-transparent
-    cursor-pointer transition-all duration-200
-    disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              text-slate-700 dark:text-white
+              bg-transparent border-none shadow-none rounded-none
+              hover:underline hover:scale-105 hover:bg-transparent
+              cursor-pointer transition-all duration-200
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
           >
             New Array
           </button>
 
-          {/* Speed Select - Modern glassmorphism design */}
+          {/* Speed Select */}
           <div className="ml-auto">
             <label className="block text-sm font-medium text-slate-600 dark:text-gray-300 mb-1">
               Speed
@@ -235,16 +248,16 @@ function SortingChart() {
               onChange={changeSortingSpeed}
               defaultValue="normal"
               className="px-4 pr-8 py-3 rounded-xl font-medium
-        bg-white/80 dark:bg-gray-800/80 
-        text-slate-700 dark:text-white
-        border border-slate-200 dark:border-gray-600
-        shadow-md backdrop-blur-sm
-        cursor-pointer outline-none 
-        focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400
-        transition-all duration-200
-        hover:bg-white dark:hover:bg-gray-700
-        disabled:opacity-50 disabled:cursor-not-allowed
-        appearance-none bg-no-repeat bg-[right_1rem_center]"
+                bg-white/80 dark:bg-gray-800/80 
+                text-slate-700 dark:text-white
+                border border-slate-200 dark:border-gray-600
+                shadow-md backdrop-blur-sm
+                cursor-pointer outline-none 
+                focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400
+                transition-all duration-200
+                hover:bg-white dark:hover:bg-gray-700
+                disabled:opacity-50 disabled:cursor-not-allowed
+                appearance-none bg-no-repeat bg-[right_1rem_center]"
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
                 backgroundSize: "1.25rem",
@@ -263,8 +276,8 @@ function SortingChart() {
         <div>
           <h1
             className="font-bold text-2xl md:text-4xl text-slate-800 dark:text-white 
-    tracking-wide uppercase border-b-4 border-turquoise-dark dark:border-cyan-400 
-    pb-2 mb-6 text-center drop-shadow-sm"
+              tracking-wide uppercase border-b-4 border-turquoise-dark dark:border-cyan-400 
+              pb-2 mb-6 text-center drop-shadow-sm"
           >
             {algorithmInfos[sortingState.algorithm].name}
           </h1>
@@ -274,102 +287,31 @@ function SortingChart() {
           <p className="whitespace-pre-line mb-6 text-slate-600 dark:text-white-light">
             {algorithmInfos[sortingState.algorithm].description}
           </p>
-          <div className="w-full h-0.5 bg-carbon-light mb-6" />
-          <div className="overflow-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr>
-                  <th className="px-4 border-r border-carbon-light" rowSpan={2}>
-                    Algorithm
-                  </th>
-                  <th className="px-4 border-r border-carbon-light" colSpan={3}>
-                    Time Complexity
-                  </th>
-                  <th className="px-4">Space Complexity</th>
-                </tr>
-                <tr className="border-b border-carbon-light">
-                  <th className="px-4 pb-2">Best</th>
-                  <th className="px-4 pb-2">Average</th>
-                  <th className="px-4 pb-2 border-r border-carbon-light">
-                    Worst
-                  </th>
-                  <th className="px-4 pb-2">Worst</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.keys(algorithmInfos).map((key, i) => (
-                  <tr
-                    key={i}
-                    className="hover:bg-carbon-light whitespace-nowrap"
-                  >
-                    <td
-                      className={`px-4 py-1 ${
-                        i === 0 ? "pt-2" : ""
-                      } border-r border-carbon-light font-semibold tracking-wide text-gray-900 dark:text-white`}
-                      style={{ fontFamily: "'Inter', sans-serif" }}
-                    >
-                      {algorithmInfos[key].name}
-                    </td>
-                    <td className={`px-4 py-1 ${i === 0 ? "pt-2" : ""}`}>
-                      <span
-                        className={`px-1.5 py-0.5 rounded-md bg-${algorithmInfos[key].time_complexity.best[1]}`}
-                      >
-                        {algorithmInfos[key].time_complexity.best[0]}
-                      </span>
-                    </td>
-                    <td className={`px-4 py-1 ${i === 0 ? "pt-2" : ""}`}>
-                      <span
-                        className={`px-1.5 py-0.5 rounded-md bg-${algorithmInfos[key].time_complexity.average[1]}`}
-                      >
-                        {algorithmInfos[key].time_complexity.average[0]}
-                      </span>
-                    </td>
-                    <td
-                      className={`px-4 py-1 ${
-                        i === 0 ? "pt-2" : ""
-                      } border-r border-carbon-light`}
-                    >
-                      <span
-                        className={`px-1.5 py-0.5 rounded-md bg-${algorithmInfos[key].time_complexity.worst[1]}`}
-                      >
-                        {algorithmInfos[key].time_complexity.worst[0]}
-                      </span>
-                    </td>
-                    <td className={`px-4 py-1 ${i === 0 ? "pt-2" : ""}`}>
-                      <span
-                        className={`px-1.5 py-0.5 rounded-md bg-${algorithmInfos[key].space_complexity[1]}`}
-                      >
-                        {algorithmInfos[key].space_complexity[0]}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="flex flex-wrap gap-4 justify-around">
+            <p className="text-lg text-slate-700 dark:text-white-light">
+              Time Complexity:{" "}
+              <span className="font-bold">
+                {algorithmInfos[sortingState.algorithm].timeComplexity}
+              </span>
+            </p>
+            <p className="text-lg text-slate-700 dark:text-white-light">
+              Space Complexity:{" "}
+              <span className="font-bold">
+                {algorithmInfos[sortingState.algorithm].spaceComplexity}
+              </span>
+            </p>
           </div>
-          <div className="flex justify-center ">
-            <Link to="/PracticePage">
-              <button
-                className="
-                                        px-8 py-3
-                                        bg-gradient-to-r from-blue-600 to-cyan-500
-                                        text-white font-semibold
-                                        rounded-full
-                                        shadow-lg
-                                        hover:from-blue-700 hover:to-cyan-600
-                                        focus:outline-none focus:ring-4 focus:ring-cyan-300
-                                        transition
-                                        duration-300
-                                        ease-in-out
-                                        transform
-                                        hover:scale-105
-                                    "
-              >
-                {" "}
-                Go to Practice Page
-              </button>
-            </Link>
-          </div>
+        </div>
+
+        {/* Practice Button */}
+        <div className="flex justify-center mt-10">
+          <button
+            onClick={handlePracticeClick}
+            className="px-8 py-3 rounded-full font-bold bg-gradient-to-r from-cyan-600 to-emerald-500 text-white
+              hover:from-cyan-700 hover:to-emerald-600 transition-all duration-300 shadow-lg"
+          >
+            Practice
+          </button>
         </div>
       </div>
     </div>
