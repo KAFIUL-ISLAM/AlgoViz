@@ -1,4 +1,13 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEnvelope,
+  faLock,
+  faArrowRight,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -9,6 +18,7 @@ function ForgotPassword() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const clearMessages = () => {
     setMessage("");
@@ -32,7 +42,7 @@ function ForgotPassword() {
       });
 
       const data = await res.json();
-      
+
       if (res.ok) {
         if (data.reset_token) {
           // Development mode: token is provided
@@ -43,7 +53,9 @@ function ForgotPassword() {
           // Production mode: token sent via email
           setToken("");
           setStep(2);
-          setMessage("Reset instructions have been sent to your email. Please check your inbox and enter the reset token below.");
+          setMessage(
+            "Reset instructions have been sent to your email. Please check your inbox and enter the reset token below."
+          );
         }
       } else {
         setError(data.error || "Failed to generate reset token");
@@ -60,7 +72,7 @@ function ForgotPassword() {
       setError("Please enter a new password");
       return;
     }
-    
+
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -82,9 +94,11 @@ function ForgotPassword() {
       });
 
       const data = await res.json();
-      
+
       if (res.ok) {
-        setMessage("Password reset successfully! You can now sign in with your new password.");
+        setMessage(
+          "Password reset successfully! You can now sign in with your new password."
+        );
         setStep(3);
       } else {
         setError(data.error || "Failed to reset password");
@@ -106,22 +120,28 @@ function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-cyan-900/20 p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 dark:border-gray-700/30 p-8">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">🔐</span>
-            </div>
-            <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">
-              Reset Password
-            </h2>
-            <p className="text-slate-600 dark:text-gray-300">
-              {step === 1 && "Enter your email to get a reset token"}
-              {step === 2 && "Enter your new password"}
-              {step === 3 && "Password reset complete"}
-            </p>
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="w-full max-w-md p-6 bg-white/80 dark:bg-carbon-light/90 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 dark:border-gray-700/50">
+        <div className="flex flex-col space-y-4">
+          <div className="flex-shrink-0 flex justify-center mb-3">
+            <img
+              src={
+                localStorage.getItem("darkMode") === "true"
+                  ? "/logo_dark.png"
+                  : "/logo.png"
+              }
+              alt="AlgoViz Logo"
+              className="h-20 w-20 object-contain"
+            />
           </div>
+          <h2 className="text-2xl font-semibold text-center text-slate-800 dark:text-white mb-4">
+            Reset Password
+          </h2>
+          <p className="text-slate-600 dark:text-gray-300 text-center mb-6">
+            {step === 1 && "Enter your email to get a reset token"}
+            {step === 2 && "Enter your new password"}
+            {step === 3 && "Password reset complete"}
+          </p>
 
           {/* Error Message */}
           {error && (
@@ -140,32 +160,28 @@ function ForgotPassword() {
           {/* Step 1: Email Input */}
           {step === 1 && (
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
-                  Email Address
-                </label>
+              <div className="relative">
+                <FontAwesomeIcon
+                  icon={faEnvelope}
+                  className="absolute left-3 top-3 text-gray-400"
+                />
                 <input
                   type="email"
                   value={email}
                   placeholder="Enter your email address"
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={loading}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-600 
-                           bg-white/50 dark:bg-gray-700/50 text-slate-700 dark:text-white
-                           focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 outline-none
-                           transition-all duration-200 disabled:opacity-50"
+                  className={`pl-10 pr-4 py-2 w-full border rounded focus:outline-none focus:ring bg-white/50 dark:bg-gray-700/50 text-slate-700 dark:text-white ${
+                    error
+                      ? "border-red-500"
+                      : "border-gray-300 dark:border-gray-600"
+                  }`}
                 />
-              </div>
+              </div>{" "}
               <button
                 onClick={handleRequestToken}
                 disabled={loading}
-                className="w-full py-3 px-4 rounded-xl font-medium text-white
-                         bg-gradient-to-r from-cyan-500 to-green-500 
-                         hover:from-cyan-600 hover:to-green-600 
-                         focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2
-                         disabled:opacity-50 disabled:cursor-not-allowed
-                         transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]
-                         shadow-lg hover:shadow-xl"
+                className="w-full py-2 bg-turquoise-dark text-white font-semibold rounded hover:bg-teal-700 transition"
               >
                 {loading ? "Generating Token..." : "Get Reset Token"}
               </button>
@@ -179,11 +195,16 @@ function ForgotPassword() {
                 // Development mode: show token
                 <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
                   <div className="flex items-center mb-2">
-                    <span className="text-yellow-600 dark:text-yellow-400 text-lg mr-2">⚠️</span>
-                    <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200">Development Mode</p>
+                    <span className="text-yellow-600 dark:text-yellow-400 text-lg mr-2">
+                      ⚠️
+                    </span>
+                    <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
+                      Development Mode
+                    </p>
                   </div>
                   <p className="text-sm text-yellow-700 dark:text-yellow-300 mb-2">
-                    Your reset token (in production this would be sent via email):
+                    Your reset token (in production this would be sent via
+                    email):
                   </p>
                   <code className="block p-2 bg-yellow-100 dark:bg-yellow-900/40 rounded text-xs font-mono break-all text-yellow-900 dark:text-yellow-100">
                     {token}
@@ -193,11 +214,16 @@ function ForgotPassword() {
                 // Production mode: check email
                 <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
                   <div className="flex items-center mb-2">
-                    <span className="text-blue-600 dark:text-blue-400 text-lg mr-2">📧</span>
-                    <p className="text-sm font-medium text-blue-800 dark:text-blue-200">Check Your Email</p>
+                    <span className="text-blue-600 dark:text-blue-400 text-lg mr-2">
+                      📧
+                    </span>
+                    <p className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                      Check Your Email
+                    </p>
                   </div>
                   <p className="text-sm text-blue-700 dark:text-blue-300">
-                    We've sent a reset token to your email address. Please check your inbox and enter the token below.
+                    We've sent a reset token to your email address. Please check
+                    your inbox and enter the token below.
                   </p>
                 </div>
               )}
@@ -213,45 +239,60 @@ function ForgotPassword() {
                     placeholder="Enter the token from your email"
                     onChange={(e) => setToken(e.target.value)}
                     disabled={loading}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-600 
-                             bg-white/50 dark:bg-gray-700/50 text-slate-700 dark:text-white
-                             focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 outline-none
-                             transition-all duration-200 disabled:opacity-50 font-mono"
+                    className={`pl-10 pr-4 py-2 w-full border rounded focus:outline-none focus:ring font-mono bg-white/50 dark:bg-gray-700/50 text-slate-700 dark:text-white ${
+                      error
+                        ? "border-red-500"
+                        : "border-gray-300 dark:border-gray-600"
+                    }`}
                   />
                 </div>
               )}
-              
-              <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
-                  New Password
-                </label>
+
+              <div className="relative">
+                <FontAwesomeIcon
+                  icon={faLock}
+                  className="absolute left-3 top-3 text-gray-400"
+                />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={newPassword}
                   placeholder="Enter new password"
                   onChange={(e) => setNewPassword(e.target.value)}
                   disabled={loading}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-600 
-                           bg-white/50 dark:bg-gray-700/50 text-slate-700 dark:text-white
-                           focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 outline-none
-                           transition-all duration-200 disabled:opacity-50"
+                  className={`pl-10 pr-10 py-2 w-full border rounded focus:outline-none focus:ring bg-white/50 dark:bg-gray-700/50 text-slate-700 dark:text-white ${
+                    error
+                      ? "border-red-500"
+                      : "border-gray-300 dark:border-gray-600"
+                  }`}
+                />
+                <FontAwesomeIcon
+                  icon={showPassword ? faEyeSlash : faEye}
+                  className="absolute right-3 top-3 text-gray-400 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
-                  Confirm Password
-                </label>
+              <div className="relative">
+                <FontAwesomeIcon
+                  icon={faLock}
+                  className="absolute left-3 top-3 text-gray-400"
+                />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={confirmPassword}
                   placeholder="Confirm new password"
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   disabled={loading}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-600 
-                           bg-white/50 dark:bg-gray-700/50 text-slate-700 dark:text-white
-                           focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 outline-none
-                           transition-all duration-200 disabled:opacity-50"
+                  className={`pl-10 pr-10 py-2 w-full border rounded focus:outline-none focus:ring bg-white/50 dark:bg-gray-700/50 text-slate-700 dark:text-white ${
+                    error
+                      ? "border-red-500"
+                      : "border-gray-300 dark:border-gray-600"
+                  }`}
+                />
+                <FontAwesomeIcon
+                  icon={showPassword ? faEyeSlash : faEye}
+                  className="absolute right-3 top-3 text-gray-400 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
                 />
               </div>
 
@@ -294,25 +335,16 @@ function ForgotPassword() {
               <div className="flex flex-col gap-3">
                 <button
                   onClick={resetForm}
-                  className="w-full py-3 px-4 rounded-xl font-medium
-                           bg-slate-100 dark:bg-gray-700 text-slate-700 dark:text-gray-300
-                           hover:bg-slate-200 dark:hover:bg-gray-600
-                           focus:ring-2 focus:ring-slate-400 focus:ring-offset-2
-                           transition-all duration-200"
+                  className="flex-1 py-3 px-4 rounded font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
                 >
                   Reset Another Password
                 </button>
-                <a
-                  href="/signin"
-                  className="w-full py-3 px-4 rounded-xl font-medium text-white text-center block
-                           bg-gradient-to-r from-cyan-500 to-green-500 
-                           hover:from-cyan-600 hover:to-green-600 
-                           focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2
-                           transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]
-                           shadow-lg hover:shadow-xl"
+                <Link
+                  to="/signin"
+                  className="flex-1 py-3 px-4 rounded font-medium text-white text-center bg-turquoise-dark hover:bg-teal-700 transition"
                 >
                   Back to Login
-                </a>
+                </Link>
               </div>
             </div>
           )}

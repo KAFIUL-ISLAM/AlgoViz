@@ -1,31 +1,42 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext.jsx";
+import { useAuth } from "../contexts/AuthContext.jsx";
 import { SortingContext } from "../contexts/SortingContext.jsx";
 import algorithmInfos from "../data/algorithmInfos.js";
 import AppHeader from "./AppHeader";
+import Footer from "./Footer";
 
 function SortingChart() {
+  console.log("Rendering SortingChart");
   const navigate = useNavigate();
-  const { isLoggedIn } = useContext(AuthContext);
-
+  const { user } = useAuth();
   const {
     sortingState,
     generateSortingArray,
     startVisualizing,
+    stopVisualizing,
     changeSortingSpeed,
     changeAlgorithm,
   } = useContext(SortingContext);
 
-  const [isDark, setIsDark] = useState(false);
+  console.log("sortingState:", sortingState);
+
+  const [isDark, setIsDark] = useState(() => {
+    // Initialize from localStorage, default to false if not set
+    const saved = localStorage.getItem("darkMode");
+    return saved === "true";
+  });
 
   // Generate initial array on mount
   useEffect(() => {
     generateSortingArray();
-  }, [generateSortingArray]);
+  }, []);
 
   // Dark mode toggle effect
   useEffect(() => {
+    // Update localStorage when dark mode changes
+    localStorage.setItem("darkMode", isDark);
+
     if (isDark) {
       document.documentElement.classList.add("dark");
       document.body.classList.add("dark");
@@ -39,7 +50,7 @@ function SortingChart() {
 
   // Handle Practice button click
   const handlePracticeClick = () => {
-    if (isLoggedIn) {
+    if (user) {
       navigate("/PracticePage");
     } else {
       const goSignup = window.confirm(
@@ -52,7 +63,7 @@ function SortingChart() {
   };
 
   return (
-    <div className="mt-4 mb-4 flex flex-col items-center">
+    <div className="mt-4 flex flex-col items-center">
       {/* Header */}
       <AppHeader isDark={isDark} setIsDark={setIsDark} />
       <hr className="w-full border-t border-gray-300 dark:border-gray-600 my-4" />
@@ -202,25 +213,39 @@ function SortingChart() {
 
         {/* Controls */}
         <div className="flex items-center gap-4 w-full mb-8">
-          {/* Start Button */}
+          {/* Start/Stop Button */}
           <button
-            disabled={sortingState.sorting}
-            onClick={startVisualizing}
-            className="group relative px-6 py-3 rounded-xl font-semibold text-white 
-              bg-gradient-to-br from-cyan-500 to-emerald-500 
-              dark:from-cyan-400 dark:to-emerald-400
+            onClick={() => {
+              if (sortingState.sorting) {
+                stopVisualizing();
+              } else {
+                startVisualizing();
+              }
+            }}
+            disabled={sortingState.stopSort}
+            className={`group relative px-6 py-3 rounded-xl font-semibold text-white 
+              ${
+                sortingState.sorting
+                  ? "bg-gradient-to-br from-rose-500 to-red-500 dark:from-rose-400 dark:to-red-400"
+                  : "bg-gradient-to-br from-cyan-500 to-emerald-500 dark:from-cyan-400 dark:to-emerald-400"
+              }
               shadow-lg hover:shadow-xl 
               transform hover:scale-105 transition-all duration-200
               border border-cyan-300/20 dark:border-cyan-300/30
               backdrop-blur-sm
-              disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
           >
             <span className="relative z-10">
-              {sortingState.sorting ? "Sorting..." : "Start Sort"}
+              {sortingState.sorting ? "Stop Sort" : "Start Sort"}
             </span>
             <div
-              className="absolute inset-0 rounded-xl bg-gradient-to-br from-cyan-600 to-emerald-600 
-                opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              className={`absolute inset-0 rounded-xl bg-gradient-to-br 
+                ${
+                  sortingState.sorting
+                    ? "from-rose-600 to-red-600"
+                    : "from-cyan-600 to-emerald-600"
+                }
+                opacity-0 group-hover:opacity-100 transition-opacity duration-200`}
             />
           </button>
 
@@ -314,6 +339,7 @@ function SortingChart() {
           </button>
         </div>
       </div>
+      <Footer isDark={isDark} />
     </div>
   );
 }

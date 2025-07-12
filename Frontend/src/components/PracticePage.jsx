@@ -7,6 +7,7 @@ import Timergame from "./Timergame";
 
 import { Link } from "react-router-dom";
 import PythonEditor from "./PythonEditor";
+import Footer from "./Footer";
 
 function PracticePage() {
   const [seconds, setSeconds] = useState(0);
@@ -137,6 +138,7 @@ function PracticePage() {
           <CodeEditor />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
