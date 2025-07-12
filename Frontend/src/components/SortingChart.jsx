@@ -65,7 +65,7 @@ function SortingChart() {
   return (
     <div className="mt-4 flex flex-col items-center">
       {/* Header */}
-      <AppHeader isDark={isDark} setIsDark={setIsDark} />
+      <AppHeader isDark={isDark} setIsDark={setIsDark} user={user} />
       <hr className="w-full border-t border-gray-300 dark:border-gray-600 my-4" />
 
       <h2 className="text-xl lg:text-2xl font-bold text-slate-800 dark:text-white mb-6">
