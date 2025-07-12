@@ -298,33 +298,68 @@ function SortingChart() {
         <div className="w-full h-0.5 bg-carbon-light mb-4" />
 
         {/* Info Table */}
-        <div>
-          <h1
-            className="font-bold text-2xl md:text-4xl text-slate-800 dark:text-white 
-              tracking-wide uppercase border-b-4 border-turquoise-dark dark:border-cyan-400 
-              pb-2 mb-6 text-center drop-shadow-sm"
-          >
+        <div className="overflow-x-auto w-full mt-6">
+          <h1 className="font-bold text-2xl md:text-4xl text-center text-slate-800 dark:text-white mb-6 border-b-4 border-cyan-500 pb-2">
             {algorithmInfos[sortingState.algorithm].name}
           </h1>
-          <h2 className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-white mb-4 tracking-wide border-l-4 border-turquoise-dark dark:border-cyan-400 pl-3">
+
+          <h2 className="text-xl font-semibold text-slate-800 dark:text-white mb-3 border-l-4 border-cyan-500 pl-3">
             Definition
           </h2>
-          <p className="whitespace-pre-line mb-6 text-slate-600 dark:text-white-light">
+          <p className="mb-6 text-slate-600 dark:text-gray-300 whitespace-pre-line leading-relaxed">
             {algorithmInfos[sortingState.algorithm].description}
           </p>
-          <div className="flex flex-wrap gap-4 justify-around">
-            <p className="text-lg text-slate-700 dark:text-white-light">
-              Time Complexity:{" "}
-              <span className="font-bold">
-                {algorithmInfos[sortingState.algorithm].timeComplexity}
-              </span>
-            </p>
-            <p className="text-lg text-slate-700 dark:text-white-light">
-              Space Complexity:{" "}
-              <span className="font-bold">
-                {algorithmInfos[sortingState.algorithm].spaceComplexity}
-              </span>
-            </p>
+
+          <div className="overflow-x-auto rounded-xl shadow-md border border-gray-300 dark:border-gray-700 bg-slate-100 dark:bg-[#1e293b]">
+            <table className="min-w-full table-auto text-sm text-left">
+              <thead className="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-100">
+                <tr>
+                  <th className="py-3 px-4 border-b border-gray-300 dark:border-gray-600">
+                    Algorithm
+                  </th>
+                  <th className="py-3 px-4 border-b border-gray-300 dark:border-gray-600">
+                    Best Case
+                  </th>
+                  <th className="py-3 px-4 border-b border-gray-300 dark:border-gray-600">
+                    Average Case
+                  </th>
+                  <th className="py-3 px-4 border-b border-gray-300 dark:border-gray-600">
+                    Worst Case
+                  </th>
+                  <th className="py-3 px-4 border-b border-gray-300 dark:border-gray-600">
+                    Space Complexity
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(algorithmInfos).map(([key, algo]) => (
+                  <tr
+                    key={key}
+                    className="hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                  >
+                    <td className="py-3 px-4 font-medium text-slate-900 dark:text-white">
+                      {algo.name}
+                    </td>
+                    {["best", "average", "worst"].map((type) => (
+                      <td key={type} className="py-3 px-4">
+                        <span
+                          className={`inline-block px-2 py-1 rounded-md text-xs font-semibold bg-${algo.time_complexity[type][1]} text-white`}
+                        >
+                          {algo.time_complexity[type][0]}
+                        </span>
+                      </td>
+                    ))}
+                    <td className="py-3 px-4">
+                      <span
+                        className={`inline-block px-2 py-1 rounded-md text-xs font-semibold bg-${algo.space_complexity[1]} text-white`}
+                      >
+                        {algo.space_complexity[0]}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -335,11 +370,11 @@ function SortingChart() {
             className="px-8 py-3 rounded-full font-bold bg-gradient-to-r from-cyan-600 to-emerald-500 text-white
               hover:from-cyan-700 hover:to-emerald-600 transition-all duration-300 shadow-lg"
           >
-            Practice
+            Go to Practice
           </button>
         </div>
       </div>
-      <Footer isDark={isDark} />
+      <Footer isDark={isDark} setIsDark={setIsDark} />
     </div>
   );
 }

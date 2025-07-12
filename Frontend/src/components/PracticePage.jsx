@@ -14,6 +14,28 @@ function PracticePage() {
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef(null);
 
+  const [isDark, setIsDark] = useState(() => {
+      // Initialize from localStorage, default to false if not set
+      const saved = localStorage.getItem("darkMode");
+      return saved === "true";
+    });
+  
+    // Dark mode toggle effect
+    useEffect(() => {
+      // Update localStorage when dark mode changes
+      localStorage.setItem("darkMode", isDark);
+  
+      if (isDark) {
+        document.documentElement.classList.add("dark");
+        document.body.classList.add("dark");
+        document.body.classList.remove("bg-gray-50", "text-slate-800");
+      } else {
+        document.documentElement.classList.remove("dark");
+        document.body.classList.remove("dark");
+        document.body.classList.add("bg-gray-50", "text-slate-800");
+      }
+    }, [isDark]);
+
   const resetTimer = () => {
     clearInterval(intervalRef.current);
     setIsRunning(false);
@@ -138,7 +160,7 @@ function PracticePage() {
           <CodeEditor />
         </div>
       </div>
-      <Footer />
+      <Footer isDark={isDark} setIsDark={setIsDark} />
     </div>
   );
 }

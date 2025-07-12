@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart,
   faGraduationCap,
-  faPalette,
+  faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 
-function Footer({ isDark }) {
+function Footer({ isDark, setIsDark }) {
   return (
     <footer className="w-full relative overflow-hidden mt-8 shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.3)]">
       {/* Gradient Background */}
@@ -66,7 +66,11 @@ function Footer({ isDark }) {
                     </p>
                   </div>
                 </div>
-                <p className="text-slate-700 dark:text-gray-300 hover:text-turquoise-dark dark:hover:text-turquoise-light transition-colors">
+                <p className="text-slate-700 dark:text-gray-300 flex items-center gap-3 hover:text-turquoise-dark dark:hover:text-turquoise-light transition-colors pl-6">
+                  <FontAwesomeIcon
+                    icon={faCalendarDays}
+                    className="text-turquoise-dark group-hover:scale-110 transition-transform"
+                  />
                   Summer Practice Internship 2025
                 </p>
               </div>

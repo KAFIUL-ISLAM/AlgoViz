@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -15,6 +15,28 @@ import { jwtDecode } from "jwt-decode";
 function SignUp() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
+
+  const [isDark, setIsDark] = useState(() => {
+    // Initialize from localStorage, default to false if not set
+    const saved = localStorage.getItem("darkMode");
+    return saved === "true";
+  });
+
+  // Dark mode toggle effect
+  useEffect(() => {
+    // Update localStorage when dark mode changes
+    localStorage.setItem("darkMode", isDark);
+
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+      document.body.classList.add("dark");
+      document.body.classList.remove("bg-gray-50", "text-slate-800");
+    } else {
+      document.documentElement.classList.remove("dark");
+      document.body.classList.remove("dark");
+      document.body.classList.add("bg-gray-50", "text-slate-800");
+    }
+  }, [isDark]);
 
   const [showPassword, setShowPassword] = useState(false);
   const [userInfo, setUserInfo] = useState({
