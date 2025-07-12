@@ -4,21 +4,29 @@ import MergeSortGame from "./MergeSortGame";
 import SelectionSortGame from "./SelectionSortGame";
 import SortTheMess from "./SortTheMess";
 import Timergame from "./Timergame";
-
+import GameCard from "./GameCard"
 import { Link } from "react-router-dom";
 import PythonEditor from "./PythonEditor";
 import Footer from "./Footer";
+import {
+  ArrowLeftStartOnRectangleIcon,
+  HomeIcon,
+  MoonIcon,
+  SunIcon,
+} from "@heroicons/react/24/solid";
+
 
 function PracticePage() {
-  const [seconds, setSeconds] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const intervalRef = useRef(null);
+
 
   const [isDark, setIsDark] = useState(() => {
       // Initialize from localStorage, default to false if not set
       const saved = localStorage.getItem("darkMode");
       return saved === "true";
-    });
+  });
+   useEffect(() => {
+     window.scrollTo({ top: 0, behavior: "smooth" }); // scrolls on component mount
+   }, []);
   
     // Dark mode toggle effect
     useEffect(() => {
@@ -36,129 +44,115 @@ function PracticePage() {
       }
     }, [isDark]);
 
-  const resetTimer = () => {
-    clearInterval(intervalRef.current);
-    setIsRunning(false);
-    setSeconds(0);
-  };
-
-  useEffect(() => {
-    if (isRunning) {
-      intervalRef.current = setInterval(() => {
-        setSeconds((prev) => prev + 1);
-      }, 1000);
-    } else {
-      clearInterval(intervalRef.current);
-    }
-    return () => clearInterval(intervalRef.current);
-  }, [isRunning]);
-
-  const toggleTimer = () => {
-    setIsRunning((prev) => !prev);
-  };
-
   return (
     <div>
-      {/* Header Section with Timer */}
-      <div className="w-full mt-8 mb-6">
-        <div className="flex items-center justify-between w-full mb-6 relative">
-          {/* Left side: Stopwatch Icon */}
-          <div className="flex items-center gap-2">
+      <div className="mx-12">
+        {/* Header Section with Timer */}
+        <div className="flex items-center justify-between py-3 w-full mb-8">
+          {/* Left: Chronometer Icon (matches logo style) */}
+          <div className="flex-shrink-0">
             <img
-              src="/favicon.png"
-              alt="Chronometer Icon"
-              className="w-8 h-10"
+              src={isDark ? "/logo_dark.png" : "/logo.png"}
+              alt="AlgoViz Logo"
+              className="h-20 w-20 object-contain"
             />
           </div>
 
-          {/* Center: Title */}
-          <h1 className="text-2xl font-bold text-[#2B7A70]">
-            Searching & Sorting Algorithms Practice
-          </h1>
-
-          {/* Right side: Timer and Button */}
-          <div className="flex items-center gap-4">
-            <button
-              onClick={toggleTimer}
-              className="flex items-center gap-2 px-4 py-2 bg-[#2B7A70] text-white rounded-full hover:bg-[#D93025] transition text-sm"
+          {/* Center: Page Title (same font as AppHeader) */}
+          <div className="flex-1 text-center">
+            <h1
+              className="text-3xl sm:text-5xl font-semibold tracking-wide text-slate-800 dark:text-white"
+              style={{ fontFamily: "Bebas Neue, sans-serif" }}
             >
-              <img
-                src="/chrono.png"
-                alt="Chrono Icon"
-                className="inline w-4 h-4 mr-2"
-              />
-              {isRunning ? "Stop" : "Start "} ({seconds}s)
-            </button>
+              Searching & Sorting Practice
+            </h1>
+          </div>
 
+          {/* Right: Navigation and Theme Toggle */}
+          <div className="flex items-center gap-2">
+            {/* Go Back Button */}
+            <Link to="/">
+              <button
+                className="p-2 rounded-full bg-gray-100 hover:bg-gray-300 text-gray-800 
+                 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
+                title="Go Back to Home"
+              >
+                <HomeIcon className="h-6 w-6" />
+              </button>
+            </Link>
+
+            {/* Theme Toggle */}
             <button
-              onClick={resetTimer}
-              className="p-5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition text-xl"
-              title="Refresh Timer"
+              onClick={() => setIsDark(!isDark)}
+              className="p-2 rounded-full bg-gray-100 hover:bg-gray-300 text-gray-800 
+               dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition"
+              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             >
-              🔄
+              {isDark ? (
+                <SunIcon className="h-6 w-6" />
+              ) : (
+                <MoonIcon className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
 
-        <hr className="border-t-2 border-gray-300 mb-6 w-full" />
-      </div>
-
-      {/* Description */}
-      <p
-        className="list-disc list-inside flex flex-col gap-2 text-gray-700 dark:text-white-light text-left text-base leading-relaxed"
-        style={{ fontFamily: "'DM Sans', sans-serif" }}
-      >
-        🎮 Ready to level up your logic? Dive into fun coding games and
-        interactive editors that turn Python and sorting algorithms into pure
-        brain fuel. Want an extra challenge? ⏱️ Use the timer and race against
-        the clock to beat your best time!
-      </p>
-
-      {/* 🧩 Interactive Sorting Games Section */}
-      <section className="mb-24">
-        <h2 className="text-2xl font-bold text-[#2B7A70] text-center mb-2">
-          🧩 Interactive Sorting Games
-        </h2>
-        <p className="text-center text-gray-600 dark:text-gray-300 mb-10">
-          Drag, swap, race the clock — practice sorting like never before.
-        </p>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Merge Sort Game Card */}
-          <div className="bg-white dark:bg-gray-800 border rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 flex flex-col justify-between">
-            <h3 className="text-lg font-semibold text-[#2B7A70] mb-4 flex items-center gap-2">
-              🧬 Merge Sort Challenge
-            </h3>
-            <MergeSortGame />
-          </div>
-
-          {/* Selection Sort Game Card */}
-          <div className="bg-white dark:bg-gray-800 border rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 flex flex-col justify-between">
-            <h3 className="text-lg font-semibold text-[#2B7A70] mb-4 flex items-center gap-2">
-              🎯 Selection Sort Challenge
-            </h3>
-            <SelectionSortGame />
-          </div>
-
-          {/* Timer Game Card */}
-          <div className="bg-white dark:bg-gray-800 border rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 flex flex-col justify-between">
-            <h3 className="text-lg font-semibold text-[#2B7A70] mb-4 flex items-center gap-2">
-              ⏳ Beat The Clock!
-            </h3>
-            <Timergame />
-          </div>
+        {/* Description */}
+        <div className="max-w-4xl mx-auto text-center mb-12 px-4">
+          <p className="text-lg text-gray-700 dark:text-gray-200 leading-relaxed font-medium">
+            🎮 Ready to level up your logic? Dive into fun coding games and
+            interactive editors that turn Python and sorting algorithms into
+            pure brain fuel.
+            <br />
+            ⏱️ Want an extra challenge? Use the timer and race against the clock
+            to beat your best time!
+          </p>
         </div>
-      </section>
 
-      {/* Code Editor and Extra Panel Section */}
-      <div className="max-w-6xl mx-auto mb-20">
+        {/* 🧩 Interactive Sorting Games Section */}
+        <section className="mb-24">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#2B7A70] mb-3 tracking-tight">
+              🧩 Interactive Sorting Games
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg">
+              Drag, swap, race the clock — practice sorting like never before.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-4">
+            {/* Merge Sort Game Card */}
+            <GameCard title="Merge Sort Challenge" icon="🧬">
+              <MergeSortGame />
+            </GameCard>
+
+            {/* Selection Sort Game Card */}
+            <GameCard title="Selection Sort Challenge" icon="🎯">
+              <SelectionSortGame />
+            </GameCard>
+
+            {/* Timer Game Card */}
+            <GameCard title="⏳ Beat The Clock!" icon="⏳">
+              <Timergame />
+            </GameCard>
+
+            <GameCard title="Sort the Mess (Simple)!" icon="⏳">
+              <SortTheMess />
+            </GameCard>
+            <div className="lg:col-span-2">
+              <GameCard title="Code Editor" icon="🧠">
+                <CodeEditor />
+              </GameCard>
+            </div>
+          </div>
+        </section>
+
         <h2 className="text-xl font-bold text-[#2B7A70] mb-6 text-center">
           ✨Explore Sorting Logic — Write Code, Test Ideas!
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <SortTheMess />
-          <CodeEditor />
-        </div>
+
+        {/* Code Editor and Extra Panel Section */}
+        <div className=""></div>
       </div>
       <Footer isDark={isDark} setIsDark={setIsDark} />
     </div>

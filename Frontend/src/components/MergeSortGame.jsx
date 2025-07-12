@@ -52,11 +52,22 @@ function MergeSortGame() {
     }
   };
 
-  const resetGame = () => window.location.reload();
+  const resetGame = () => {
+    const arr = generateRandomArray();
+    const pairs = [];
+    for (let i = 0; i < arr.length; i += 2) {
+      pairs.push([arr[i], arr[i + 1]]);
+    }
+    setOriginalArray(arr);
+    setCurrentPairs(pairs);
+    setMergedPairs([]);
+    setFinalMerged([]);
+    setStep(0);
+  };
 
   return (
-    <div className="p-4 mt-8 border rounded shadow bg-white dark:bg-carbon text-left">
-      <h2 className="text-2xl font-bold text-[#2B7A70] mb-4">
+    <div className="p-6 mt-8 border rounded-2xl shadow-lg bg-white dark:bg-gray-800 text-left transition-all">
+      <h2 className="text-2xl font-bold text-[#2B7A70] mb-4 font-sans">
         Merge Pairs – Merge Sort Game
       </h2>
 
@@ -75,7 +86,7 @@ function MergeSortGame() {
             <button
               key={idx}
               onClick={() => mergePair(idx)}
-              className="bg-gray-100 dark:bg-carbon-light p-3 rounded shadow hover:bg-green-200 transition font-mono"
+              className="bg-[#2B7A70] hover:scale-105  p-3 rounded-2xl text-white font-bold shadow font-mono"
             >
               {pair.join(", ")} → Merge
             </button>
@@ -91,15 +102,15 @@ function MergeSortGame() {
       </div>
 
       {finalMerged.length > 0 && (
-        <div className="mt-6 bg-blue-100 p-4 rounded font-mono text-blue-900">
-          🎉 Sorted Array: [{finalMerged.join(", ")}]
+        <div className="mt-6 bg-green-100 dark:bg-green-900 p-4 rounded-lg font-mono text-green-800 dark:text-green-200 shadow">
+          🎉 <strong>Sorted Array:</strong> [{finalMerged.join(", ")}]
         </div>
       )}
 
       <div className="mt-6">
         <button
           onClick={resetGame}
-          className="px-4 py-2 bg-[#2B7A70] text-white rounded hover:bg-[#1E293B]"
+          className="px-4 py-2 bg-[#2B7A70] text-white rounded-full hover:bg-[#205E5B] transition font-semibold shadow-sm"
         >
           🔄 Restart Game
         </button>

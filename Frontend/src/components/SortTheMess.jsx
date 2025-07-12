@@ -39,7 +39,6 @@ const SortTheMessSimple = () => {
     try {
       let userInput;
       if (input.trim().startsWith("[")) {
-        // Try to parse array input
         userInput = JSON.stringify(JSON.parse(input));
       } else {
         userInput = input.trim();
@@ -66,12 +65,12 @@ const SortTheMessSimple = () => {
   };
 
   return (
-    <div className="border rounded p-6 shadow bg-white dark:bg-carbon flex flex-col justify-center">
-      <h2 className="text-2xl font-bold mb-4 text-center text-[#2B7A70]">
-        🤔 Sort the Mess (Simple)!
+    <div className="p-6 mt-8 max-w-3xl mx-auto border rounded-2xl shadow bg-white dark:bg-gray-800 text-left">
+      <h2 className="text-2xl font-bold mb-4 text-[#2B7A70]">
+        Sort the Mess (Simple)!
       </h2>
 
-      <p className="text-sm text-center mb-4 text-gray-700 dark:text-gray-300">
+      <p className="text-sm mb-4 text-gray-700 dark:text-gray-300">
         {currentQuestion.question}
       </p>
 
@@ -79,25 +78,25 @@ const SortTheMessSimple = () => {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="e.g. [1, 2, 3] or 2"
-        className="w-full p-2 mb-4 border rounded-md font-mono text-sm bg-gray-50 dark:bg-gray-800 dark:text-white"
+        className="w-full p-3 mb-4 border rounded-md font-mono text-sm bg-gray-50 dark:bg-gray-800 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-[#2B7A70]"
       />
 
       <div className="flex justify-between mb-4">
         <button
           onClick={checkAnswer}
-          className="px-4 py-2 bg-[#2B7A70] text-white rounded hover:bg-[#1E293B] text-sm"
+          className="px-5 py-2 bg-[#2B7A70] text-white rounded hover:bg-[#1E293B] text-sm transition"
         >
           ▶️ Run
         </button>
         <button
           onClick={nextQuestion}
-          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm"
+          className="px-5 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm transition"
         >
           🔄 Next
         </button>
       </div>
 
-      <div className="bg-gray-100 dark:bg-gray-900 p-3 rounded-md text-sm text-gray-800 dark:text-white whitespace-pre-wrap h-28 overflow-auto">
+      <div className="bg-gray-100 dark:bg-gray-900 p-4 rounded-md text-sm text-gray-800 dark:text-white font-mono whitespace-pre-wrap h-28 overflow-auto">
         {output || "📝 Output will appear here..."}
       </div>
     </div>

@@ -32,11 +32,22 @@ function AppHeader({ isDark, setIsDark, user }) {
       {/* Icons */}
       <div className="flex items-center gap-2">
         {user ? (
-          <Link to="/signout" title="Profile">
-            <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition">
-              <ArrowLeftStartOnRectangleIcon className="h-6 w-6" />
-            </button>
-          </Link>
+          <>
+            {/* User Profile Icon */}
+            <Link to="/" title="User Profile">
+              <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition">
+                <UserPlusIcon className="h-6 w-6" />{" "}
+                {/* Replace with a user icon or avatar if available */}
+              </button>
+            </Link>
+
+            {/* Logout Icon */}
+            <Link to="/signout" title="Logout">
+              <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition">
+                <ArrowLeftStartOnRectangleIcon className="h-6 w-6" />
+              </button>
+            </Link>
+          </>
         ) : (
           <>
             <Link to="/signin" title="Sign In">

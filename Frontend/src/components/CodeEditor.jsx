@@ -62,7 +62,7 @@ const CodeEditor = () => {
           setOutput("✅ Correct! Great job.");
         } else {
           setOutput(
-            `❌ Incorrect output.\nYour Output: ${userOutput}\nExpected: ${expectedOutput}`
+            `❌ Incorrect.\nYour Output: ${userOutput}\nExpected: ${expectedOutput}`
           );
         }
       } else {
@@ -79,79 +79,81 @@ const CodeEditor = () => {
       newIndex = Math.floor(Math.random() * questionsWithAnswers.length);
     } while (newIndex === questionIndex);
     setQuestionIndex(newIndex);
+    setCode("");
+    setOutput("");
   };
 
   return (
-    <div className="p-4 border rounded shadow bg-white dark:bg-carbon h-full flex flex-col items-start text-left">
-      <div className="flex items-center justify-between w-full mb-4">
-        <h2 className="text-xl font-bold text-[#2B7A70]">
-          🧠 Sort It Like It's Hot!
-        </h2>
-      </div>
+    <div className="p-6 mt-8 border rounded-2xl bg-white dark:bg-gray-800 text-left shadow-lg transition-all">
+      <h2 className="text-2xl font-bold text-[#2B7A70] mb-4">
+        Sort It Like It's Hot!
+      </h2>
 
-      {/* Question */}
-      <div className="mb-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md border">
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-          🔍 Question:
-        </p>
-        <p className="text-gray-800 dark:text-white mb-2">
-          {questionsWithAnswers[questionIndex].question}
-        </p>
-        <button
-          onClick={refreshQuestion}
-          className="text-sm px-3 py-1 bg-[#2B7A70] text-white rounded hover:bg-[#1E293B] transition"
-        >
-          🔄 New Question
-        </button>
-      </div>
-
-      {/* Language Selection */}
-      <div className="mb-4">
-        <label className="mr-2 font-semibold text-gray-700 dark:text-white-light text-sm">
-          Language:
-        </label>
-        <select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
-          className="px-2 py-1 border border-gray-300 rounded-md text-sm"
-        >
-          <option value="javascript">JavaScript</option>
-        </select>
-      </div>
-
-      {/* Editor */}
-      <textarea
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        className="w-full h-40 p-2 mb-4 font-mono text-sm border rounded-md bg-gray-50 dark:bg-gray-800 dark:text-white"
-        placeholder="Write your code here... Example: [10,9,8,7].sort((a,b)=>a-b)"
-      ></textarea>
-
-      {/* Buttons */}
-      {/* Buttons */}
-      <div className="flex justify-between w-full mb-4">
-        {/* Run Button on the left */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Question Box */}
         <div>
-          <button
-            onClick={runCode}
-            className="px-6 py-2 bg-[#2B7A70] text-white rounded hover:bg-[#1E293B] transition"
-          >
-            ▶️ Run
-          </button>
+          <div className="mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-md border">
+            <p className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+              🔍 Question:
+            </p>
+            <p className="text-gray-800 dark:text-white mb-3">
+              {questionsWithAnswers[questionIndex].question}
+            </p>
+            <button
+              onClick={refreshQuestion}
+              className="text-sm px-3 py-1 bg-[#2B7A70] text-white rounded hover:bg-[#1E293B] transition"
+            >
+              🔄 New Question
+            </button>
+          </div>
+
+          {/* Language Dropdown */}
+          <div className="mb-4">
+            <label className="mr-2 font-semibold text-gray-700 dark:text-white text-sm">
+              Language:
+            </label>
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              className="px-2 py-1 border border-gray-300 rounded-md text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            >
+              <option value="javascript">JavaScript</option>
+            </select>
+          </div>
         </div>
 
-        {/* Clear Button on the right */}
+        {/* Code Editor */}
         <div>
-          <button
-            onClick={() => {
-              setCode("");
-              setOutput("");
-            }}
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm"
-          >
-            🔄 Clear
-          </button>
+          {" "}
+          <textarea
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            className="w-full h-40 p-3 mb-4 font-mono text-sm border rounded-md bg-gray-50 dark:bg-gray-800 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-[#2B7A70]"
+            placeholder="Write your code here... Example: [10,9,8,7].sort((a,b)=>a-b)"
+          />
+          {/* Action Buttons */}
+          <div className="flex justify-between w-full mb-4">
+            <button
+              onClick={runCode}
+              className="px-6 py-2 bg-[#2B7A70] text-white rounded hover:bg-[#1E293B] transition"
+            >
+              ▶️ Run
+            </button>
+            <button
+              onClick={() => {
+                setCode("");
+                setOutput("");
+              }}
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-sm"
+            >
+              🔄 Clear
+            </button>
+          </div>
         </div>
+      </div>
+      {/* Output Display */}
+      <div className="bg-gray-100 dark:bg-gray-900 p-4 rounded-md text-sm text-gray-800 dark:text-white font-mono whitespace-pre-wrap h-24 overflow-auto">
+        {output || "📝 Output will appear here..."}
       </div>
     </div>
   );
