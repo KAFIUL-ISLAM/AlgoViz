@@ -12,9 +12,11 @@ function AIBox() {
     setResponse("");
 
     try {
-      console.log("Calling API with URL:", "http://localhost:8000/api/openai/");
+      console.log("Calling API with URL:", "${import.meta.env.VITE_API_URL}
+/api/openai/");
 
-      const res = await fetch("http://localhost:8000/api/openai/", {
+      const res = await fetch("${import.meta.env.VITE_API_URL}
+/api/openai/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: prompt.trim() }),

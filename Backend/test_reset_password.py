@@ -5,7 +5,7 @@ Test script for reset password functionality
 import requests
 import json
 
-BASE_URL = "http://localhost:8000/api"
+BASE_URL = "https://algoviz-backend.up.railway.app/api"
 
 def test_forgot_password():
     """Test the forgot password endpoint"""

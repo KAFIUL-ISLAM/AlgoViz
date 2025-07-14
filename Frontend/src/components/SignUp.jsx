@@ -89,7 +89,8 @@ function SignUp() {
 
     try {
       // 1. Signup the user
-      const signupRes = await fetch("http://localhost:8000/api/signup/", {
+      const signupRes = await fetch(`${import.meta.env.VITE_API_URL}
+/api/signup/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -108,7 +109,8 @@ function SignUp() {
       }
 
       // 2. Immediately login after signup (get tokens)
-      const loginRes = await fetch("http://localhost:8000/api/token/", {
+      const loginRes = await fetch(`${import.meta.env.VITE_API_URL}
+/api/token/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
