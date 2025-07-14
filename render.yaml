@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: config
-    env: python
-    plan: free
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn AlgoViz_Backend.wsgi"
-    workingDir: Backend
-    autoDeploy: true
