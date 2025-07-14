@@ -12,12 +12,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from dotenv import load_dotenv
 import os
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
-
 
 load_dotenv()
 
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+
 
 from pathlib import Path
 
@@ -46,7 +45,11 @@ SECRET_KEY = 'django-insecure-p3*pet&x604t2q+66t=u#^c_p@kn2#s-f(3veu1*=d2k8_l6(#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
+
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 
 # Application definition
