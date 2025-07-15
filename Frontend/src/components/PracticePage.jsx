@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CodeEditor from "./CodeEditor";
 import MergeSortGame from "./MergeSortGame";
 import SelectionSortGame from "./SelectionSortGame";
@@ -6,10 +6,8 @@ import SortTheMess from "./SortTheMess";
 import Timergame from "./Timergame";
 import GameCard from "./GameCard"
 import { Link } from "react-router-dom";
-import PythonEditor from "./PythonEditor";
 import Footer from "./Footer";
 import {
-  ArrowLeftStartOnRectangleIcon,
   HomeIcon,
   MoonIcon,
   SunIcon,

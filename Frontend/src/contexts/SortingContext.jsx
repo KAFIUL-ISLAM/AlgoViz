@@ -1,4 +1,4 @@
-import { createContext, useState, useRef, useEffect } from "react";
+import { createContext, useState, useRef } from "react";
 import { getRandomNumber, getDigit, mostDigits } from "../helpers/math.jsx";
 import { awaitTimeout } from "../helpers/promises.js";
 

@@ -8,7 +8,7 @@ import SignUp from "./components/SignUp";
 import SignOut from "./components/SignOut";
 import ForgotPassword from "./components/ForgotPassword";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
@@ -26,14 +26,6 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/PracticePage" element={<PracticePage />} />
               <Route path="/signout" element={<SignOut />} />
-              {/* <Route
-  path="/dashboard"
-  element={
-    <PrivateRoute>
-      <YourDashboardComponent />  {/* Replace with actual dashboard component }
-    </PrivateRoute>
-  }
-/> */}
             </Routes>
           </div>
         </SortingProvider>
